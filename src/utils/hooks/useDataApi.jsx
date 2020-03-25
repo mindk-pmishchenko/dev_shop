@@ -21,7 +21,15 @@ const dataFetchReducer = (state, action) => {
                 isLoading: true
             };
         case FETCH_SUCCESS:
+            return {
+                rawData: action.payload,
+                isLoading: false
+            };
         case FETCH_FAILURE:
+            return {
+                isLoading: false,
+                isError: true
+            };
         default:
             throw new Error("Action is not found!");
     }
@@ -49,7 +57,7 @@ export default function useDataApi(config) {
                 } catch (e) {
                     dispatch({type: FETCH_FAILURE, payload: e.message});
                 }
-            }
+            };
 
             fetchData();
 
@@ -57,5 +65,7 @@ export default function useDataApi(config) {
                 ignore = true;
             };
         }, [config.url, config.method, config.data]
-    )
+    );
+
+    return state;
 }
