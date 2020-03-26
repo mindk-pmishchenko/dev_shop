@@ -8,19 +8,22 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
 
+import useDataApi from "../../utils/hooks/useDataApi";
 import ListItemLink from "../../components/ListItemLink/ListItemLink";
 
 function Menu() {
     const [open, setOpen] = React.useState(false);
 
+    const { rawData } = useDataApi({ url: '/categories' });
+
     const handleCategoriesClick = () => {
         setOpen(prevOpen => !prevOpen);
     };
 
-    const categories = [
-        <ListItemLink primary="Category 1"/>,
-        <ListItemLink primary="Category 2"/>
-    ];
+    const categories = rawData ?
+        rawData.map(({id, title, alias}) =>
+            <ListItemLink key={id} primary={title} to={`/category/${alias}`} />) :
+        [];
 
     return (
         <nav>
