@@ -46,11 +46,20 @@ function Menu({categories}) {
 }
 
 Menu.propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.objectOf({
-        id: PropTypes.number.isRequired,
-        title: PropTypes.string.isRequired,
-        alias: PropTypes.string.isRequired
-    }))
+    categories: PropTypes.arrayOf(function(propValue, key, componentName, location, propFullName) {
+        const objectKeys = Object.keys(propValue[key]);
+        for (let k of ['id', 'title', 'alias']) {
+            if ( !objectKeys.includes(k) ) {
+                return new Error(`Field '${k}' missing in category ${key}.`);
+            }
+            if (k === 'id' && typeof propValue[key][k] !== 'number') {
+                return new Error(`Field '${k}' invalid type in category ${key}.`);
+            }
+            if ( (k === 'title' || k === 'alias') && typeof propValue[key][k] !== 'string') {
+                return new Error(`Field '${k}' invalid type in category ${key}.`);
+            }
+        }
+    })
 };
 
 export default Menu;
