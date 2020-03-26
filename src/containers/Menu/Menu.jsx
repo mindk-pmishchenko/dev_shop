@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from 'prop-types';
+
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -42,5 +44,13 @@ function Menu({categories}) {
         </nav>
     );
 }
+
+Menu.propTypes = {
+    categories: PropTypes.arrayOf(PropTypes.objectOf({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        alias: PropTypes.string.isRequired
+    }))
+};
 
 export default Menu;
