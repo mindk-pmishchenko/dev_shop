@@ -4,16 +4,17 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import Menu from "../Menu/Menu";
 import useStyles from "./styles";
+import useDataApi from "../../utils/hooks/useDataApi";
 
 function Layout() {
     const classes = useStyles();
-
+    const { rawData } = useDataApi({ url: '/categories' });
     return (
         <BrowserRouter>
             <Grid container classes={classes.app}>
                 <Grid container direction="raw">
                     <Grid className={classes.menu}>
-                        <Menu/>
+                        <Menu categories={rawData}/>
                     </Grid>
                     <Grid className={classes.mainSection}>
                         <Switch>
