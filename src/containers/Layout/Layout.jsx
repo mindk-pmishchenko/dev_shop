@@ -9,13 +9,15 @@ import useDataApi from "../../utils/hooks/useDataApi";
 
 function Layout() {
     const classes = useStyles();
-    const { rawData } = useDataApi({ url: '/categories' });
+
+    const { rawData, isLoading } = useDataApi({ url: '/categories' });
+
     return (
         <BrowserRouter>
             <Grid container classes={classes.app}>
                 <Grid container direction="raw">
                     <Grid className={classes.menu}>
-                        <Menu categories={rawData}/>
+                        <Menu categories={rawData ? rawData : []}/>
                     </Grid>
                     <Grid className={classes.mainSection}>
                         <Switch>
@@ -23,7 +25,7 @@ function Layout() {
                                 Main Page
                             </Route>
                             <Route path="/category/:alias">
-                                <CategoryPage categories={rawData} />
+                                <CategoryPage isLoading={isLoading} categories={rawData ? rawData : []} />
                             </Route>
                             <Route>
                                 404

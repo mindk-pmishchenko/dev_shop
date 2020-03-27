@@ -19,10 +19,8 @@ function Menu({categories}) {
         setOpen(prevOpen => !prevOpen);
     };
 
-    categories = categories ?
-        categories.map(({id, title, alias}) =>
-            <ListItemLink key={id} primary={title} to={`/category/${alias}`} />) :
-        [];
+    categories = categories.map(({id, title, alias}) =>
+        <ListItemLink key={id} primary={title} to={`/category/${alias}`} />);
 
     return (
         <nav>

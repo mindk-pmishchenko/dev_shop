@@ -1,11 +1,12 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 
-function CategoryPage({categories}) {
+function CategoryPage({categories, isLoading}) {
     const {alias} = useParams();
     const category = categories.find(category => category.alias === alias);
-
-    return `${category.title} ${category.id}`;
+    const component = isLoading ? 'Loading...' :
+        category ? `${category.title} ${category.id}` : 'Category not found';
+    return component;
 }
 
 export default CategoryPage;
