@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from 'prop-types';
 
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
@@ -11,6 +10,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
 
 import ListItemLink from "../../components/ListItemLink/ListItemLink";
+import categoriesProp from "../../propTypes/categoriesProp";
 
 function Menu({categories}) {
     const [open, setOpen] = React.useState(false);
@@ -44,20 +44,7 @@ function Menu({categories}) {
 }
 
 Menu.propTypes = {
-    categories: PropTypes.arrayOf(function(propValue, key, componentName, location, propFullName) {
-        const objectKeys = Object.keys(propValue[key]);
-        for (let k of ['id', 'title', 'alias']) {
-            if ( !objectKeys.includes(k) ) {
-                return new Error(`Field '${k}' missing in category ${key}.`);
-            }
-            if (k === 'id' && typeof propValue[key][k] !== 'number') {
-                return new Error(`Field '${k}' invalid type in category ${key}.`);
-            }
-            if ( (k === 'title' || k === 'alias') && typeof propValue[key][k] !== 'string') {
-                return new Error(`Field '${k}' invalid type in category ${key}.`);
-            }
-        }
-    })
+    categories: categoriesProp
 };
 
 export default Menu;
