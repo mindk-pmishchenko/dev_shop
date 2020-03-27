@@ -3,8 +3,8 @@ import Grid from '@material-ui/core/Grid'
 import { useLocation } from 'react-router-dom'
 
 import useStyles from './styles'
-import categoriesPropTypes from '../../types/categoriesPropTypes'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import { categoriesPropTypes } from '../../types'
 import { checkPath, getCategory } from '../../utils/helper'
 
 const CategoryPage = categories => {

@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { List, ListItem, ListItemText, Collapse } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
+import useStyles from './styles'
 import SubHeader from '../../components/SubHeader/SubHeader'
 import ListItemLink from '../../components/ListItemLink/ListItemLink'
-import categoriesPropTypes from '../../types/categoriesPropTypes'
-import useStyles from './styles'
+import { categoriesPropTypes } from '../../types'
 
 const Menu = ({ categories }) => {
   const classes = useStyles()
@@ -31,6 +31,7 @@ const Menu = ({ categories }) => {
       )
     }
   }
+
   return (
     <nav>
       <List>
