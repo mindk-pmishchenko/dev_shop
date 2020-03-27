@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "core",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "supervisor": "^0.12.0"
   },
   "scripts": {
     "start": "supervisor server.js"

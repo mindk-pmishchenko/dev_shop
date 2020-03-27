@@ -3,25 +3,29 @@ import Grid from "@material-ui/core/Grid";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import Menu from "../Menu/Menu";
+import CategoryPage from "../CategoryPage/CategoryPage"
 import useStyles from "./styles";
+import useDataApi from "../../utils/hooks/useDataApi";
 
 function Layout() {
     const classes = useStyles();
+
+    const { rawData, isLoading } = useDataApi({ url: '/categories' });
 
     return (
         <BrowserRouter>
             <Grid container classes={classes.app}>
                 <Grid container direction="raw">
                     <Grid className={classes.menu}>
-                        <Menu/>
+                        <Menu categories={rawData ? rawData : []}/>
                     </Grid>
                     <Grid className={classes.mainSection}>
                         <Switch>
                             <Route exact path="/">
                                 Main Page
                             </Route>
-                            <Route path="/category">
-                                {/*<CategoryPage />*/}
+                            <Route path="/category/:alias">
+                                <CategoryPage isLoading={isLoading} categories={rawData ? rawData : []} />
                             </Route>
                             <Route>
                                 404

@@ -1,4 +1,5 @@
 import React from "react";
+
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -8,22 +9,18 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
 
-import useDataApi from "../../utils/hooks/useDataApi";
 import ListItemLink from "../../components/ListItemLink/ListItemLink";
+import categoriesProp from "../../propTypes/categoriesProp";
 
-function Menu() {
+function Menu({categories}) {
     const [open, setOpen] = React.useState(false);
-
-    const { rawData } = useDataApi({ url: '/categories' });
 
     const handleCategoriesClick = () => {
         setOpen(prevOpen => !prevOpen);
     };
 
-    const categories = rawData ?
-        rawData.map(({id, title, alias}) =>
-            <ListItemLink key={id} primary={title} to={`/category/${alias}`} />) :
-        [];
+    categories = categories.map(({id, title, alias}) =>
+        <ListItemLink key={id} primary={title} to={`/category/${alias}`} />);
 
     return (
         <nav>
@@ -45,5 +42,9 @@ function Menu() {
         </nav>
     );
 }
+
+Menu.propTypes = {
+    categories: categoriesProp
+};
 
 export default Menu;
