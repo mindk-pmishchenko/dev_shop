@@ -10,4 +10,6 @@ const categoryPropTypes = PropTypes.shape({
   updatedAt: PropTypes.string
 })
 
+categoryPropTypes.children = PropTypes.arrayOf(PropTypes.shape(categoryPropTypes))
+
 export default categoryPropTypes
