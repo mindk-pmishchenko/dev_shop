@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+  db:
+    image: 'postgres'
+    restart: always
+    env_file:
+      - ./api/.env
+    ports:
+      - '5432:5432'
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+  api:
+    build:
+      context: './api'
+      dockerfile: dockerfile
+      target: dev
+    restart: always
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    command: npm run dev
+    ports:
+      - '5000:3000'
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: './frontend'
+      dockerfile: dockerfile
+      target: dev
+    restart: always
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run start
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+      - api
+volumes:
+  dbdata:

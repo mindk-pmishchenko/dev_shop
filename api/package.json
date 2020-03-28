@@ -1,11 +1,37 @@
 {
-  "name": "api",
-  "version": "0.0.1",
-  "description": "core",
-  "dependencies": {
-    "express": "^4.17.1"
-  },
-  "scripts": {
-    "start": "supervisor server.js"
-  }
+    "name": "mindk-express-rest-api",
+    "version": "1.0.0",
+    "description": "Internet shop on express js",
+    "main": "index.js",
+    "scripts": {
+        "dev": "dotenv nodemon index.js",
+        "start": "NODE_ENV=production dotenv node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "mindk-express-rest-api"
+    },
+    "author": "Dream team",
+    "license": "ISC",
+    "devDependencies": {
+        "nodemon": "^2.0.1",
+        "prettier": "^1.19.1"
+    },
+    "dependencies": {
+        "@sendgrid/mail": "^6.5.3",
+        "cls-hooked": "^4.2.2",
+        "cors": "^2.8.5",
+        "dotenv-cli": "^3.1.0",
+        "express": "^4.17.1",
+        "express-fileupload": "^1.1.6",
+        "knex": "^0.20.8",
+        "nunjucks": "^3.2.0",
+        "objection": "^2.1.2",
+        "objection-password": "^2.0.0",
+        "passport": "^0.4.1",
+        "passport-http-bearer": "^1.0.1",
+        "passport-local": "^1.0.0",
+        "pg": "^7.17.1",
+        "uuid": "^3.4.0"
+    }
 }
