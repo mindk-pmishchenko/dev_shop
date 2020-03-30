@@ -31,7 +31,7 @@ const CategoryPage = ({ categories }) => {
 };
 
 CategoryPage.propTypes = {
-  categories: PropTypes.arrayOf(category)
+  categories: PropTypes.arrayOf(category).isRequired
 };
 
 export default CategoryPage;

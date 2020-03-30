@@ -8,6 +8,7 @@ import HomePage from '../../components/pages/homePage';
 import CategoryPage from '../../components/pages/categoryPage';
 import NotFound from '../../components/pages/notFound';
 import useDataApi from '../../utils/hooks/useDataApi';
+import ErrorBoundary from './../../components/ErrorBoundary/ErrorBoundary';
 
 const Layout = () => {
   const classes = useStyles();
@@ -22,31 +23,37 @@ const Layout = () => {
   );
 
   return (
-    <Grid container classes={classes.app}>
-      <Grid container direction="row">
-        <Grid className={classes.menu}>
-          {isLoading ? (
-            'Loading'
-          ) : (
-            <Menu categories={categoriesList} />
-          )}
-        </Grid>
-        <Grid className={classes.mainSection}>
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route
-              path="/categories/:alias"
-              children={
-                <CategoryPage categories={categoriesList} />
-              }
-            />
-            <Route path="*" component={NotFound} />
-          </Switch>
+    <ErrorBoundary>
+      <Grid container classes={classes.app}>
+        <Grid container direction="row">
+          <Grid className={classes.menu}>
+            {isLoading ? (
+              'Loading'
+            ) : (
+              <Menu categories={categoriesList} />
+            )}
+          </Grid>
+          <Grid className={classes.mainSection}>
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route
+                path="/categories/:alias"
+                children={
+                  categoriesList && (
+                    <CategoryPage
+                      categories={categoriesList}
+                    />
+                  )
+                }
+              />
+              <Route path="*" component={NotFound} />
+            </Switch>
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </ErrorBoundary>
   );
 };
 
