@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { memo } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { Link } from 'react-router-dom';
+
+const catClickHandler = id => {
+  console.log(`cat clicked: ${id}`);
+};
 
 function ListItemLink({ primary, categiryId, ...other }) {
   return (
     <li>
       <ListItem
         button
+        component={Link}
         {...other}
-        onClick={() => {
-          console.log(`show cat ${categiryId}`);
-        }}
+        onClick={() => catClickHandler(categiryId)}
       >
         <ListItemText primary={primary} />
       </ListItem>
@@ -18,4 +22,4 @@ function ListItemLink({ primary, categiryId, ...other }) {
   );
 }
 
-export default ListItemLink;
+export default memo(ListItemLink);

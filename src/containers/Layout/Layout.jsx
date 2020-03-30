@@ -1,24 +1,53 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import { Switch, Route } from 'react-router-dom';
 
 import Menu from '../Menu/Menu';
 import useStyles from './styles';
+import HomePage from '../../components/pages/homePage';
+import CategoryPage from '../../components/pages/categoryPage';
+import NotFound from '../../components/pages/notFound';
+import useDataApi from '../../utils/hooks/useDataApi';
 
-function Layout() {
+const Layout = () => {
   const classes = useStyles();
+
+  const config = {
+    url: '/categories',
+    method: 'GET',
+    data: ''
+  };
+  const { rawData: categoriesList, isLoading } = useDataApi(
+    config
+  );
 
   return (
     <Grid container classes={classes.app}>
       <Grid container direction="row">
         <Grid className={classes.menu}>
-          <Menu />
+          {isLoading ? (
+            'Loading'
+          ) : (
+            <Menu categories={categoriesList} />
+          )}
         </Grid>
         <Grid className={classes.mainSection}>
-          Products
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route
+              path="/categories/:alias"
+              children={
+                <CategoryPage categories={categoriesList} />
+              }
+            />
+            <Route path="*" component={NotFound} />
+          </Switch>
         </Grid>
       </Grid>
     </Grid>
   );
-}
+};
 
 export default Layout;

@@ -21,8 +21,6 @@ const dataFetchReducer = (state, action) => {
         isLoading: true
       };
     case FETCH_SUCCESS:
-      //console.log(action.payload);
-
       return {
         rawData: action.payload,
         isLoading: false
@@ -31,7 +29,8 @@ const dataFetchReducer = (state, action) => {
       return {
         rawData: null,
         isLoading: false,
-        isError: true
+        isError: true,
+        errMessage: action.payload
       };
     default:
       throw new Error('Action is not found!');
@@ -74,7 +73,6 @@ export default function useDataApi(config) {
 
     return function cleanup() {
       ignore = true;
-      //console.log('ignor:', ignore);
     };
   }, [config.url, config.method, config.data]);
   return state;

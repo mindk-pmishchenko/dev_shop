@@ -7,44 +7,29 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
-import useDataApi from '../../utils/hooks/useDataApi';
-import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import ListItemLink from '../../components/ListItemLink/ListItemLink';
 
-let categories = [];
-
-function Menu() {
-  const config = {
-    url: '/categories',
-    method: 'GET',
-    data: ''
-  };
-
-  const data = useDataApi(config);
-
+function Menu({ categories }) {
   const [open, setOpen] = React.useState(false);
 
   const handleCategoriesClick = () => {
     setOpen(prevOpen => !prevOpen);
   };
 
-  useEffect(() => {
-    if (data.rawData) {
-      //console.log('useEffect rawData:', data.rawData);
-
-      categories = data.rawData.map(el => {
-        return (
-          <ListItemLink
-            primary={el.title}
-            key={el.id}
-            categiryId={el.id}
-          />
-        );
-      });
-      //console.log('categories', categories);
-    }
-  }, [data]);
+  if (categories) {
+    categories = categories.map(el => {
+      return (
+        <ListItemLink
+          primary={el.title}
+          key={el.id}
+          categiryId={el.id}
+          to={`/categories/${el.alias}`}
+        />
+      );
+    });
+  }
 
   return (
     <nav>
@@ -69,5 +54,15 @@ function Menu() {
     </nav>
   );
 }
+
+Menu.propTypes = {
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      alias: PropTypes.string.isRequired
+    })
+  )
+};
 
 export default Menu;
