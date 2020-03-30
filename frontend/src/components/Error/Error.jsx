@@ -1,10 +1,10 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 
-const NotFoundPage = () => (
+const Error = ({ type = '404' }) => (
   <Grid container justify="center">
-    404
+    {type}
   </Grid>
 )
 
-export default NotFoundPage
+export default Error

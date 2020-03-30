@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
 
-import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import Error from '../../components/Error/Error'
 import category from '../../types/category'
 import { checkPath, getCategory } from '../../utils/helper'
 import useStyles from './styles'
@@ -17,7 +17,7 @@ const Category = ({ categories }) => {
   }
 
   if (!checkPath(pathname, categories)) {
-    return <NotFoundPage />
+    return <Error />
   }
 
   const { id, name } = getCategory(pathname, categories)

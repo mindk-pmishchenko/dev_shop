@@ -6,7 +6,7 @@ import useDataApi from '../../utils/hooks/useDataApi'
 import Menu from '../Menu/Menu'
 import Spinner from '../../components/Spinner/Spinner'
 import Category from '../Category/Category'
-import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import Error from '../../components/Error/Error'
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
 import useStyles from './styles'
 
@@ -31,7 +31,7 @@ const Layout = () => {
                   <Category categories={categories} />
                 </Route>
                 <Route>
-                  <NotFoundPage />
+                  <Error />
                 </Route>
               </Switch>
             </Grid>
