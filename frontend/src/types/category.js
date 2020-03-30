@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-const categoryPropTypes = PropTypes.shape({
+const category = PropTypes.shape({
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   slug: PropTypes.string.isRequired,
@@ -10,6 +10,6 @@ const categoryPropTypes = PropTypes.shape({
   updatedAt: PropTypes.string
 })
 
-categoryPropTypes.children = PropTypes.arrayOf(PropTypes.shape(categoryPropTypes))
+category.children = PropTypes.arrayOf(category)
 
-export default categoryPropTypes
+export default category

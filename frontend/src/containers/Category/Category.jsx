@@ -1,9 +1,10 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
+import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
 
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
-import { categoriesPropTypes } from '../../types'
+import category from '../../types/category'
 import { checkPath, getCategory } from '../../utils/helper'
 import useStyles from './styles'
 
@@ -27,8 +28,8 @@ const Category = categories => {
   )
 }
 
-CategoryPage.propTypes = {
-  categories: categoriesPropTypes
+Category.propTypes = {
+  categories: PropTypes.arrayOf(category).isRequired
 }
 
 export default Category

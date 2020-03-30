@@ -5,10 +5,11 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
+import PropTypes from 'prop-types'
 
 import SubHeader from '../../components/SubHeader/SubHeader'
 import ListItemLink from '../../components/ListItemLink/ListItemLink'
-import { categoriesPropTypes } from '../../types'
+import category from '../../types/category'
 import useStyles from './styles'
 
 const Menu = ({ categories }) => {
@@ -57,7 +58,7 @@ const Menu = ({ categories }) => {
 }
 
 Menu.propTypes = {
-  categories: categoriesPropTypes
+  categories: PropTypes.arrayOf(category).isRequired
 }
 
 export default Menu

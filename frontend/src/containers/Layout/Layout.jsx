@@ -5,7 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import useDataApi from '../../utils/hooks/useDataApi'
 import Menu from '../Menu/Menu'
 import Spinner from '../../components/Spinner/Spinner'
-import CategoryPage from '../CategoryPage/CategoryPage'
+import Category from '../Category/Category'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
 import useStyles from './styles'
@@ -28,7 +28,7 @@ const Layout = () => {
                   Main page
                 </Route>
                 <Route path="/category">
-                  <CategoryPage categories={categories} />
+                  <Category categories={categories} />
                 </Route>
                 <Route>
                   <NotFoundPage />
