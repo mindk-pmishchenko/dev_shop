@@ -2,13 +2,13 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
-import useStyles from './styles'
+import useDataApi from '../../utils/hooks/useDataApi'
 import Menu from '../Menu/Menu'
 import Spinner from '../../components/Spinner/Spinner'
 import CategoryPage from '../CategoryPage/CategoryPage'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
-import useDataApi from '../../utils/hooks/useDataApi'
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
+import useStyles from './styles'
 
 const Layout = () => {
   const classes = useStyles()

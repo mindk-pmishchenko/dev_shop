@@ -1,5 +1,6 @@
 import React from 'react'
-import { ListSubheader, Divider } from '@material-ui/core'
+import ListSubheader from '@material-ui/core/ListSubheader'
+import Divider from '@material-ui/core/Divider'
 
 const SubHeader = () => (
   <>

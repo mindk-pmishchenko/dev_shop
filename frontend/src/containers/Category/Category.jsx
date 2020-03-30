@@ -2,12 +2,12 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import { useLocation } from 'react-router-dom'
 
-import useStyles from './styles'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import { categoriesPropTypes } from '../../types'
 import { checkPath, getCategory } from '../../utils/helper'
+import useStyles from './styles'
 
-const CategoryPage = categories => {
+const Category = categories => {
   const classes = useStyles()
   const { pathname } = useLocation()
 
@@ -31,4 +31,4 @@ CategoryPage.propTypes = {
   categories: categoriesPropTypes
 }
 
-export default CategoryPage
+export default Category

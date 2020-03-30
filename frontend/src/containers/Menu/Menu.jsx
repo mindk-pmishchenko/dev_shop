@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
-import { List, ListItem, ListItemText, Collapse } from '@material-ui/core'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Collapse from '@material-ui/core/Collapse'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
 
-import useStyles from './styles'
 import SubHeader from '../../components/SubHeader/SubHeader'
 import ListItemLink from '../../components/ListItemLink/ListItemLink'
 import { categoriesPropTypes } from '../../types'
+import useStyles from './styles'
 
 const Menu = ({ categories }) => {
   const classes = useStyles()
