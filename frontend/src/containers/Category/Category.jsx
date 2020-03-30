@@ -8,9 +8,13 @@ import category from '../../types/category'
 import { checkPath, getCategory } from '../../utils/helper'
 import useStyles from './styles'
 
-const Category = categories => {
+const Category = ({ categories }) => {
   const classes = useStyles()
   const { pathname } = useLocation()
+
+  if (categories.length === 0) {
+    return null
+  }
 
   if (!checkPath(pathname, categories)) {
     return <NotFoundPage />
