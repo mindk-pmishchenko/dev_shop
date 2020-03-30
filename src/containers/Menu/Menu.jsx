@@ -8,6 +8,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import PropTypes from 'prop-types';
+import category from '../../types/category';
 
 import ListItemLink from '../../components/ListItemLink/ListItemLink';
 
@@ -56,13 +57,7 @@ function Menu({ categories }) {
 }
 
 Menu.propTypes = {
-  categories: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      alias: PropTypes.string.isRequired
-    })
-  )
+  categories: PropTypes.arrayOf(category)
 };
 
 export default Menu;

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import PropTypes from 'prop-types';
+import category from '../../../types/category';
 import './categoryPage.css';
 
 const CategoryPage = ({ categories }) => {
@@ -26,6 +28,10 @@ const CategoryPage = ({ categories }) => {
     );
   }
   return <div>loading...</div>;
+};
+
+CategoryPage.propTypes = {
+  categories: PropTypes.arrayOf(category)
 };
 
 export default CategoryPage;
