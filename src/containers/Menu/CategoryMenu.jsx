@@ -19,10 +19,11 @@ function CategoryMenu({categories, parentId}) {
 
     return (
         <>
+            {categoriesArray.length > 0 &&
             <ListItem button onClick={handleCategoriesClick}>
                 <ListItemText primary="Categories"/>
                 {open ? <ExpandLess/> : <ExpandMore/>}
-            </ListItem>
+            </ListItem>}
             <Collapse component="li" in={open} timeout="auto" unmountOnExit>
                 <List disablePadding>{categoriesArray.map(({id, title, alias}) =>
                     <>
