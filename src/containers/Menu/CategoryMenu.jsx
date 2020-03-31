@@ -8,7 +8,7 @@ import List from "@material-ui/core/List";
 
 import ListItemLink from "../../components/ListItemLink/ListItemLink";
 
-function CategoryMenu({categories, parentId}) {
+function CategoryMenu({categories, parentId, parentAlias}) {
     const [open, setOpen] = React.useState(false);
 
     const handleCategoriesClick = () => {
@@ -27,8 +27,8 @@ function CategoryMenu({categories, parentId}) {
             <Collapse component="li" in={open} timeout="auto" unmountOnExit>
                 <List disablePadding>{categoriesArray.map(({id, title, alias}) =>
                     <>
-                        <ListItemLink key={id} primary={title} to={`/category/${alias}`} />
-                        <CategoryMenu categories={categories} parentId={id} />
+                        <ListItemLink key={id} primary={title} to={`/category/${parentAlias ? parentAlias+'/' : ''}${alias}`} />
+                        <CategoryMenu categories={categories} parentId={id} parentAlias={alias}/>
                     </>
                 )}</List>
             </Collapse>
