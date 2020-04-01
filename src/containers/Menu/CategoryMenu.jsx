@@ -15,11 +15,11 @@ function CategoryMenu({categories, parentId, parentAlias}) {
         setOpen(prevOpen => !prevOpen);
     };
 
-    const categoriesArray =  categories.filter(({parent_id: categoryParentId}) => categoryParentId === parentId);
+    const categoriesArray = categories.filter(({parent_id: categoryParentId}) => categoryParentId === parentId);
 
     return (
         <>
-            {categoriesArray.length > 0 &&
+            {!!categoriesArray.length &&
             <ListItem button onClick={handleCategoriesClick}>
                 <ListItemText primary="Categories"/>
                 {open ? <ExpandLess/> : <ExpandMore/>}
