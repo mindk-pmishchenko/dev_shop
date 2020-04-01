@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -7,11 +7,25 @@ import Menu from "../Menu/Menu";
 import Category from "../../components/Category/Category";
 import ErrorBoundary from "../../components/ErrorBoundry/ErrorBoundary";
 import useDataApi from "../../utils/hooks/useDataApi";
+import Basket from "../../components/Basket/Basket";
+import BasketContext from "../../context/basketContext";
 import useStyles from "./styles";
 
 function Layout() {
     const classes = useStyles();
     const { rawData, isLoading } = useDataApi({ url: '/categories' });
+
+    const [openBasket, setOpenBasket] = useState(true);
+    const handleCloseBasket = () => setOpenBasket(false);
+    const {basket, setBasket} = useContext(BasketContext);
+
+    const handleDeleteProduct = name => () => {
+        setBasket(prevBasket => prevBasket);
+    };
+
+    const setProductCount = name => count => {
+        setBasket(prevBasket => prevBasket);
+    };
 
     return (
         <ErrorBoundary>
@@ -39,6 +53,13 @@ function Layout() {
                     </Grid>
                 </Grid>
             </BrowserRouter>
+            <Basket
+                open={openBasket}
+                onClose={handleCloseBasket}
+                basket={basket}
+                handleDeleteProduct={handleDeleteProduct}
+                setProductCount={setProductCount}
+            />
         </ErrorBoundary>
     );
 }
