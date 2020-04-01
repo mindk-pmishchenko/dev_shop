@@ -14,7 +14,7 @@ const MenuItem = ({ category, path }) => {
   return (
     <List className={classes.list}>
       {category.children.map(subcategory => {
-        const categoryUrl = `/category/${path === '' ? '' : `${path}/`}${category.slug}/${subcategory.slug}`
+        const categoryUrl = `/category/${categoryPath}/${subcategory.slug}`
 
         return (
           <ListItemLink key={subcategory.id} primary={subcategory.name} className={classes.listItem} to={categoryUrl}>
