@@ -28,7 +28,7 @@ function CategoryMenu({categories, parentId, parentAlias}) {
                 <List disablePadding>{categoriesArray.map(({id, title, alias}) =>
                     <>
                         <ListItemLink key={id} primary={title} to={`/category/${parentAlias ? parentAlias+'/' : ''}${alias}`} />
-                        <CategoryMenu categories={categories} parentId={id} parentAlias={alias}/>
+                        <CategoryMenu categories={categories} parentId={id} parentAlias={(parentAlias ? parentAlias+'/' : '') + alias}/>
                     </>
                 )}</List>
             </Collapse>
