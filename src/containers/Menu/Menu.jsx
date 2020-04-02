@@ -15,7 +15,7 @@ function Menu({categories}) {
                    </Typography>
                 </div>
                 <Divider/>
-                <CategoryMenu categories={categories} parentId={null} />
+                <CategoryMenu categories={categories} parentId={null} parentAlias={null}/>
             </List>
         </nav>
     );

@@ -46,6 +46,12 @@ const categories = [
         title: "Games",
         alias: "games",
         parent_id: 5
+    },
+    {
+        id: 9,
+        title: 'Call of Duty',
+        alias: 'call-of-duty',
+        parent_id: 8
     }
 ];
 
