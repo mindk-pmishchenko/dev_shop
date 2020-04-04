@@ -21,7 +21,7 @@ exports.seed = knex =>
                         ['Год выпуска']: 2019,
                         цвет: 'серый (Space Gray)',
                     }),
-                    photo: 'http:://localhost:3000/no-photo.jpg',
+                    photo: 'http://localhost:5000/no-photo.jpg',
                 },
                 {
                     name: 'Apple MacBook Air 256GB Space Gray (MVFJ2) 2019',
@@ -41,7 +41,7 @@ exports.seed = knex =>
                         ['Год выпуска']: 2019,
                         цвет: 'серый (Space Gray)',
                     }),
-                    photo: 'http:://localhost:3000/no-photo.jpg',
+                    photo: 'http://localhost:5000/no-photo.jpg',
                 },
                 {
                     name: 'Apple MacBook Air 128GB Gold (MVFM2) 2019',
@@ -61,7 +61,7 @@ exports.seed = knex =>
                         ['Год выпуска']: 2019,
                         цвет: 'серый (Space Gray)',
                     }),
-                    photo: 'http:://localhost:3000/no-photo.jpg',
+                    photo: 'http://localhost:5000/no-photo.jpg',
                 },
 
                 {
@@ -82,7 +82,7 @@ exports.seed = knex =>
                         ['Год выпуска']: 2019,
                         цвет: 'белый (White)',
                     }),
-                    photo: 'http:://localhost:3000/no-photo.jpg',
+                    photo: 'http://localhost:5000/no-photo.jpg',
                 },
             ])
         );
