@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import RemoveIcon from '@material-ui/icons/Remove'
+import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
 
 import product from '../../../types/product'
@@ -39,7 +40,7 @@ const CartDetails = ({ products, handleDeleteProduct, setProductCount }) => {
                   <IconButton onClick={setProductCount(id)(-1)}>
                     <RemoveIcon />
                   </IconButton>
-                  {`  ${quantity}  `}
+                  <Typography component="span">{` ${quantity} `}</Typography>
                   <IconButton onClick={setProductCount(id)(+1)}>
                     <AddIcon />
                   </IconButton>
