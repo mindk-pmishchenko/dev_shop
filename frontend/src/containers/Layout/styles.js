@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
   },
   mainSection: {
     height: '100%',
-    width: 'calc(100% - 360px)'
+    width: 'calc(100% - 300px)'
   }
 }))
 
