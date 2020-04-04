@@ -1,10 +1,8 @@
 import { createContext } from 'react'
 
 const initialContext = {
-  products: { ...JSON.parse(localStorage.getItem('cart')) },
-  setProducts(newProducts) {
-    this.products = newProducts
-  }
+  cart: { ...JSON.parse(localStorage.getItem('cart')) },
+  setCart: () => {}
 }
 
 const CartContext = createContext(initialContext)
