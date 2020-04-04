@@ -35,14 +35,18 @@ class BaseController {
             return rules;
         };
 
-        const relationFiltersRules = filters => {
+        const relationFiltersRules = filters => builder => {
             const filterRules = {};
             for (const filter in filters) {
                 for (const field in filters[filter]) {
-                    filterRules[`${filter}.${field}`] = filters[filter][field];
+                    if (filters[filter][field] instanceof Array) {
+                        builder.whereIn(`${filter}.${field}`, filters[filter][field]);
+                    } else {
+                        filterRules[`${filter}.${field}`] = filters[filter][field];
+                    }
                 }
             }
-            return filterRules;
+            builder.where(filterRules);
         };
 
         res.status(200).json(
@@ -56,7 +60,7 @@ class BaseController {
                                 : null
                         )
                         .joinRelated(`${Object.keys(relationFilters)}`)
-                        .where(relationFiltersRules(relationFilters))
+                        .modify(relationFiltersRules(relationFilters))
                         .orderBy(orderRules)
                         .modify(builder => {
                             if (queryCondition) {
