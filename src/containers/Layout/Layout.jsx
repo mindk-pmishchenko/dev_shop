@@ -9,13 +9,14 @@ import ErrorBoundary from "../../components/ErrorBoundry/ErrorBoundary";
 import useDataApi from "../../utils/hooks/useDataApi";
 import Basket from "../../components/Basket/Basket";
 import BasketContext from "../../context/basketContext";
+import Checkout from "../../components/Checkout/Checkout";
 import useStyles from "./styles";
 
 function Layout() {
     const classes = useStyles();
     const { rawData, isLoading } = useDataApi({ url: '/categories' });
 
-    const [openBasket, setOpenBasket] = useState(true);
+    const [openBasket, setOpenBasket] = useState(false);
     const handleCloseBasket = () => setOpenBasket(false);
     const {basket, setBasket} = useContext(BasketContext);
 
@@ -40,6 +41,9 @@ function Layout() {
                             <Switch>
                                 <Route exact path="/">
                                     Main Page
+                                </Route>
+                                <Route exact path="/checkout">
+                                    <Checkout />
                                 </Route>
                                 <Route path="/category/:alias">
                                     {isLoading && <CircularProgress />}

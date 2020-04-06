@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {createStore, combineReducers} from "redux";
+import {reducer as formReducer} from "redux-form";
+import { Provider } from "react-redux";
 
 import * as serviceWorker from './serviceWorker';
 import Layout from "./containers/Layout/Layout";
@@ -10,10 +13,18 @@ function App() {
     const [basket, setBasket] = useStateWithLocalStorage("savedProducts");
     const basketContext = {basket, setBasket};
 
+    const rootReducer = combineReducers({
+        form: formReducer
+    });
+
+    const store = createStore(rootReducer);
+
     return (
-        <BasketContext.Provider value={basketContext}>
-            <Layout />
-        </BasketContext.Provider>
+        <Provider store={store}>
+            <BasketContext.Provider value={basketContext}>
+                <Layout />
+            </BasketContext.Provider>
+        </Provider>
     );
 }
 
