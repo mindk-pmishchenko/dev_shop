@@ -1,27 +1,10 @@
-const express = require("express");
-const mock = require("./mock");
+const dotenv = require('dotenv');
 
-const port = 3001;
+dotenv.config({ path: './config.env' });
+const app = require('./app');
+// Start a Server
 
-const app = express();
-
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    next();
-});
-
-const reply = (res, body, timeout = 1000, status = 200) =>
-    setTimeout(() => {
-        res.status(status).json(body);
-    }, timeout);
-
-app.get("/categories", (req, res) => reply(res, mock.categories));
-
-app.listen(port, "localhost", err => {
-    if (err) {
-        console.log(err);
-        return;
-    }
-
-    console.log("Listening at http://localhost:" + port);
+const port = process.env.PORT || 3001; //3000 - config.env
+const server = app.listen(port, () => {
+  console.log(`App is running on port ${port}`);
 });

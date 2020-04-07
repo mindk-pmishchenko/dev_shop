@@ -1,4 +1,34 @@
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
+
+const drawerWidth = 300;
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex'
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    background: '#535454',
+    color: '#fff'
+  },
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto'
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4)
+  }
+}));
+
+export default useStyles;
+
+/*import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
     app: {
@@ -15,4 +45,4 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-export default useStyles;
+export default useStyles;*/
