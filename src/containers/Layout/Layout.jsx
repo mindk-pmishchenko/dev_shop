@@ -10,6 +10,7 @@ import useDataApi from "../../utils/hooks/useDataApi";
 import Basket from "../../components/Basket/Basket";
 import BasketContext from "../../context/basketContext";
 import Checkout from "../../components/Checkout/Checkout";
+import Auth from "../../components/Auth/Auth";
 import useStyles from "./styles";
 
 function Layout() {
@@ -41,6 +42,9 @@ function Layout() {
                             <Switch>
                                 <Route exact path="/">
                                     Main Page
+                                </Route>
+                                <Route exact path="/login">
+                                    <Auth />
                                 </Route>
                                 <Route exact path="/checkout">
                                     <Checkout />

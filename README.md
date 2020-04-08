@@ -16,3 +16,7 @@
 2.1. Add email validation
 3. Send checkout form data + products info from the basket to the server to create an order.
 3.1. Show successful message, clear checkout form and redirect to ...
+
+#9
+1. get authToken from the API in the Auth component
+2. get user data from the API before render the Application
