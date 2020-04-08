@@ -10,12 +10,13 @@ import useDataApi from "../../utils/hooks/useDataApi";
 import Basket from "../../components/Basket/Basket";
 import BasketContext from "../../context/basketContext";
 import useStyles from "./styles";
+import TopBar from "../../components/TopBar/TopBar";
 
 function Layout() {
     const classes = useStyles();
     const { rawData, isLoading } = useDataApi({ url: '/categories' });
 
-    const [openBasket, setOpenBasket] = useState(true);
+    const [openBasket, setOpenBasket] = useState(false);
     const handleCloseBasket = () => setOpenBasket(false);
     const {basket, setBasket} = useContext(BasketContext);
 
@@ -31,7 +32,8 @@ function Layout() {
         <ErrorBoundary>
             <BrowserRouter>
                 <Grid container classes={classes.app}>
-                    <Grid container direction="raw">
+                    <Grid container direction="row">
+                        <TopBar/>
                         <Grid className={classes.menu}>
                             {isLoading && <CircularProgress />}
                             {rawData && <Menu categories={rawData} />}
