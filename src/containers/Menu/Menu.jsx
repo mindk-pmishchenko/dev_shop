@@ -9,12 +9,6 @@ function Menu({categories}) {
     return (
         <nav>
             <List>
-                <div>
-                   <Typography>
-                       Super Shop
-                   </Typography>
-                </div>
-                <Divider/>
                 <CategoryMenu categories={categories} parentId={null} parentAlias={null}/>
             </List>
         </nav>
