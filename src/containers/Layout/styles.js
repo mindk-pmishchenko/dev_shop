@@ -11,7 +11,9 @@ const useStyles = makeStyles(() => ({
     },
     mainSection: {
         height: '100%',
-        width: 'calc(100% - 300px)'
+        width: 'calc(100% - 300px)',
+        padding: '20px',
+        boxSizing:'border-box'
     }
 }));
 
