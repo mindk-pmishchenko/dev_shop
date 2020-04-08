@@ -16,6 +16,7 @@ const reply = (res, body, timeout = 1000, status = 200) =>
     }, timeout);
 
 app.get("/categories", (req, res) => reply(res, mock.categories));
+app.get("/products", (req, res) => reply(res, mock.products));
 
 app.listen(port, "localhost", err => {
     if (err) {
