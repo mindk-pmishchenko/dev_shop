@@ -1,10 +1,6 @@
 import {makeStyles} from "@material-ui/core/styles";
 
 export const useStyles = makeStyles({
-    grid: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
     root: {
         maxWidth: '350px',
         minWidth: '200px',
