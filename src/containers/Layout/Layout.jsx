@@ -20,12 +20,13 @@ function Layout() {
     const handleCloseBasket = () => setOpenBasket(false);
     const {basket, setBasket} = useContext(BasketContext);
 
-    const handleDeleteProduct = name => () => {
-        setBasket(prevBasket => prevBasket);
+    const handleDeleteProduct = id => () => {
+        setBasket([...basket.filter(({id: productId}) => productId !== id )]);
     };
 
-    const setProductCount = name => count => {
-        setBasket(prevBasket => prevBasket);
+    const setProductCount = (id, count ) => {
+        basket.find((p, index, arr) => p.id === id && (arr[index].count = count) );
+        setBasket([...basket]);
     };
 
     return (
@@ -33,7 +34,7 @@ function Layout() {
             <BrowserRouter>
                 <Grid container classes={classes.app}>
                     <Grid container direction="row">
-                        <TopBar/>
+                        <TopBar setOpenBasket={setOpenBasket}/>
                         <Grid className={classes.menu}>
                             {isLoading && <CircularProgress />}
                             {rawData && <Menu categories={rawData} />}
