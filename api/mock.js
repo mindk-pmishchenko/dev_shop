@@ -60,56 +60,56 @@ const products = [
         id: 1,
         title: 'Iphone 11 Pro',
         photo: '',
-        price: '1000$',
+        price: 1000,
         cat_id: 1
     },
     {
         id: 2,
         title: 'Iphone 8',
         photo: '',
-        price: '1000$',
+        price: 1000,
         cat_id: 1
     },
     {
         id: 3,
         title: 'Samsung Galaxy S20',
         photo: '',
-        price: '1000$',
+        price: 1000,
         cat_id: 1
     },
     {
         id: 4,
         title: 'Huawei P40 Pro',
         photo: '',
-        price: '1000$',
+        price: 1000,
         cat_id: 1
     },
     {
         id: 5,
         title: 'Asus StudioBook Pro X',
         photo: '',
-        price: '4000$',
+        price: 4000,
         cat_id: 2
     },
     {
         id: 6,
         title: 'MacBook Pro 16\'',
         photo: '',
-        price: '2000$',
+        price: 2000,
         cat_id: 2
     },
     {
         id: 7,
         title: 'LG SM9000 50\'',
         photo: '',
-        price: '1000$',
+        price: 1000,
         cat_id: 3
     },
     {
         id: 8,
         title: 'LG SM9500 55\'',
         photo: '',
-        price: '1200$',
+        price: 1200,
         cat_id: 3
     },
 ];
