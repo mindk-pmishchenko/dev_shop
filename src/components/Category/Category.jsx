@@ -8,6 +8,7 @@ import category from "../../types/category";
 import useDataApi from "../../utils/hooks/useDataApi";
 import Product from "../Product/Product";
 import {useStyles} from "./styles";
+import Grid from "@material-ui/core/Grid";
 
 
 function Category({categories, match: {params}}) {
@@ -15,7 +16,7 @@ function Category({categories, match: {params}}) {
     const {alias} = params;
     const category = categories.find(({alias: categoryAlias}) => categoryAlias === alias);
 
-    const { rawData, isLoading } = useDataApi({ url: '/products' });
+    const { rawData: products, isLoading} = useDataApi({ url: '/products' });
 
     if (!category) {
         return '404';
@@ -25,7 +26,11 @@ function Category({categories, match: {params}}) {
             {`${category.id} - ${category.title}`}
         </Typography>
         {isLoading && <CircularProgress />}
-        {rawData && <Product products={rawData} cat_id={category.id}/>}
+        <Grid container>
+            {products && products
+                .filter(({cat_id: categoryId}) => categoryId === category.id)
+                .map(product => (<Product key={product.id} product={product}/>))}
+        </Grid>
     </>;
 }
 
