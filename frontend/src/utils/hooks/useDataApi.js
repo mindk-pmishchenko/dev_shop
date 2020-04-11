@@ -12,6 +12,7 @@ const initialState = {
 }
 
 const API_URL = 'http://localhost:5000/api'
+const TOKEN = localStorage.getItem('token')
 
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
@@ -40,7 +41,7 @@ const dataFetchReducer = (state, action) => {
   }
 }
 
-export default function useDataApi({ url, method, data }) {
+export default function useDataApi({ url, method }) {
   const [state, dispatch] = useReducer(dataFetchReducer, initialState)
 
   useEffect(() => {
@@ -49,28 +50,34 @@ export default function useDataApi({ url, method, data }) {
     const fetchData = async () => {
       dispatch({ type: FETCH_INIT })
 
+      const headers = TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}
+
       try {
         const result = await axios({
           url: `${API_URL}${url}`,
-          method
+          method,
+          headers
         })
 
         if (!ignore) {
-          if (result.data && result.data.success) {
-            dispatch({ type: FETCH_SUCCESS, payload: result.data.data })
-          } else {
-            dispatch({ type: FETCH_FAILURE, payload: result.data.error })
-          }
+          dispatch({ type: FETCH_SUCCESS, payload: result.data.data })
         }
-      } catch (e) {
-        dispatch({ type: FETCH_FAILURE, payload: e.message })
+      } catch (error) {
+        if (error.response) {
+          dispatch({
+            type: FETCH_FAILURE,
+            payload: error.response.data.error
+          })
+        } else {
+          dispatch({ type: FETCH_FAILURE, payload: error.message })
+        }
       }
     }
 
     fetchData()
 
     return () => (ignore = true)
-  }, [url, method, data])
+  }, [url, method])
 
   return state
 }
