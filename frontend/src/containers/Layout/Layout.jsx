@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import Grid from '@material-ui/core/Grid'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 
 import useDataApi from '../../utils/hooks/useDataApi'
 import Menu from '../Menu/Menu'
@@ -8,13 +8,23 @@ import Spinner from '../../components/Spinner/Spinner'
 import Category from '../Category/Category'
 import Cart from '../../components/Cart/Cart'
 import Error from '../../components/Error/Error'
-import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
 import CartContext from '../../context/cartContext'
+import Checkout from '../../components/Checkout/Checkout'
 import useStyles from './styles'
+import Snackbar from '../../components/Snackbar/Snackbar'
 
 const Layout = () => {
-  const { rawData, isLoading, isError } = useDataApi({ url: '/categories?filter={"limit": 100}', method: 'GET' })
-  const categories = rawData && !isError ? rawData.results : []
+  const { rawData: categoriesRawData, isLoading: isCategoriesLoading, isError: isCategoriesError } = useDataApi({
+    url: '/categories?filter={"limit": 100}',
+    method: 'GET'
+  })
+  const categories = categoriesRawData && !isCategoriesError ? categoriesRawData.results : []
+
+  const { rawData: userRawData, isLoading: isUserLoading, isUserError } = useDataApi({
+    url: `/users?filter=${JSON.stringify({ token: localStorage.getItem('token') })}`,
+    method: 'GET'
+  })
+  const user = userRawData && userRawData.results && !isUserError ? userRawData.results[0] : {}
 
   const [openCart, setOpenCart] = useState(false)
   const handleCloseCart = () => setOpenCart(false)
@@ -47,29 +57,30 @@ const Layout = () => {
   const classes = useStyles()
 
   return (
-    <ErrorBoundary>
-      <BrowserRouter>
-        <Grid container className={classes.app}>
-          <Grid container direction="row" spacing={3}>
-            <Grid className={classes.menu1} item xs={12} sm={4} md={3}>
-              {isLoading ? <Spinner /> : <Menu categories={categories} />}
-            </Grid>
-            <Grid className={classes.mainSection1} item xs={12} sm={8} md={9}>
-              <Switch>
-                <Route exact path="/">
-                  Main page
-                </Route>
-                <Route path="/category">
-                  <Category categories={categories} setOpenCart={setOpenCart} />
-                </Route>
-                <Route>
-                  <Error />
-                </Route>
-              </Switch>
-            </Grid>
+    <>
+      <Grid container className={classes.app}>
+        <Grid container direction="row" spacing={3}>
+          <Grid className={classes.menu1} item xs={12} sm={4} md={3}>
+            {isCategoriesLoading ? <Spinner /> : <Menu categories={categories} />}
+          </Grid>
+          <Grid className={classes.mainSection1} item xs={12} sm={8} md={9}>
+            <Switch>
+              <Route exact path="/">
+                Main page
+              </Route>
+              <Route exact path="/checkout">
+                {isUserLoading ? <Spinner /> : <Checkout user={user} />}
+              </Route>
+              <Route path="/category">
+                {isCategoriesLoading ? <Spinner /> : <Category categories={categories} setOpenCart={setOpenCart} />}
+              </Route>
+              <Route>
+                <Error />
+              </Route>
+            </Switch>
           </Grid>
         </Grid>
-      </BrowserRouter>
+      </Grid>
       <Cart
         open={openCart}
         onClose={handleCloseCart}
@@ -77,7 +88,8 @@ const Layout = () => {
         handleDeleteProduct={handleDeleteProduct}
         setProductCount={setProductCount}
       />
-    </ErrorBoundary>
+      <Snackbar />
+    </>
   )
 }
 
