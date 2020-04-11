@@ -80,36 +80,18 @@ class BaseController {
     }
 
     async read(req, res) {
-        res.status(200).json(
-            successResponse(
-                await this.model
-                    .query()
-                    .findById(req.params.id)
-                    .throwIfNotFound()
-            )
-        );
+        res.status(200).json(successResponse(await this.model.query().findById(req.params.id).throwIfNotFound()));
     }
 
     async update(req, res) {
         res.status(200).json(
-            successResponse(
-                await this.model
-                    .query()
-                    .patchAndFetchById(req.params.id, req.body)
-                    .throwIfNotFound()
-            )
+            successResponse(await this.model.query().patchAndFetchById(req.params.id, req.body).throwIfNotFound())
         );
     }
 
     async delete(req, res) {
         res.status(200).json(
-            successResponse(
-                await this.model
-                    .query()
-                    .deleteById(req.params.id)
-                    .returning('*')
-                    .throwIfNotFound()
-            )
+            successResponse(await this.model.query().deleteById(req.params.id).returning('*').throwIfNotFound())
         );
     }
 }
