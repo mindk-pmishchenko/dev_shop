@@ -15,12 +15,12 @@ import useStyles from './styles'
 const Product = ({ product, setOpenCart }) => {
   const { cart, setCart } = useContext(CartContext)
 
-  const productInCart = cart.products && !!cart.products.find((cartProduct) => cartProduct.id === product.id)
+  const productInCart = cart.products && cart.products.find((cartProduct) => cartProduct.id === product.id)
 
   const createNewCart = () => {
     const newCart = { ...cart, products: cart.products ? cart.products : [] }
 
-    if (!newCart.products.find((cartProduct) => cartProduct.id === product.id)) {
+    if (!productInCart) {
       newCart.products.push({ ...product, quantity: 1 })
     }
 
@@ -57,8 +57,8 @@ const Product = ({ product, setOpenCart }) => {
             </Typography>
           </Typography>
           <CardActions className={classes.cardActions}>
-            <Button variant="contained" color="primary" onClick={handleClick} disabled={productInCart}>
-              {productInCart ? 'В корзине' : 'Купить'}
+            <Button variant="contained" color="primary" onClick={handleClick} disabled={!!productInCart}>
+              {!!productInCart ? 'В корзине' : 'Купить'}
             </Button>
           </CardActions>
         </Grid>
