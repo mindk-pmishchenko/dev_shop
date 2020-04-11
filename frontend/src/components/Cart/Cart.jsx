@@ -4,6 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
+import { Link } from 'react-router-dom'
 
 import CartEmpty from './CartEmpty/CartEmpty'
 import CartDetails from './CartDetails/CartDetails'
@@ -34,8 +35,15 @@ const Cart = ({ open, onClose, cart, handleDeleteProduct, setProductCount }) => 
         <Button variant="contained" onClick={onClose}>
           Назад
         </Button>
-        <Button variant="contained" color="primary">
-          Купить
+        <Button
+          component={Link}
+          variant="contained"
+          color="primary"
+          to="/checkout"
+          disabled={cartIsEmpty}
+          onClick={onClose}
+        >
+          Оформить
         </Button>
       </DialogActions>
     </Dialog>

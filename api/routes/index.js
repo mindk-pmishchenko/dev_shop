@@ -23,7 +23,18 @@ attachResourceController('/auth', AuthController, {
         {route: '/reset', method: 'POST', action: 'reset', middleware: [allowRoles(Roles.GUEST)]},
     ],
 });
-attachResourceController('/users', UserController, {middleware: [allowRoles(Roles.ADMIN)]});
+// attachResourceController('/users', UserController, {middleware: [allowRoles(Roles.ADMIN)]});
+
+attachResourceController('/users', UserController, {
+    bindings: [
+        {route: '/', method: 'GET', action: 'index', middleware: [disallowRoles(Roles.GUEST), limitQuery('id')]},
+        {route: '/:id', method: 'GET', action: 'read', middleware: [disallowRoles(Roles.GUEST), limitQuery('id')]},
+        {route: '/', method: 'POST', action: 'create', middleware: [allowRoles(Roles.ADMIN)]},
+        {route: '/:id', method: 'PUT', action: 'update', middleware: [disallowRoles(Roles.GUEST), limitQuery('id')]},
+        {route: '/:id', method: 'DELETE', action: 'delete', middleware: [allowRoles(Roles.ADMIN)]},
+    ],
+});
+
 attachResourceController('/categories', CategoryController, {
     bindings: [
         {route: '/', method: 'GET', action: 'index'},
@@ -35,8 +46,8 @@ attachResourceController('/categories', CategoryController, {
 });
 attachResourceController('/orders', OrderController, {
     bindings: [
-        {route: '/', method: 'GET', action: 'index', middleware: [disallowRoles(Roles.GUEST), limitQuery()]},
-        {route: '/:id', method: 'GET', action: 'read', middleware: [disallowRoles(Roles.GUEST), limitQuery()]},
+        {route: '/', method: 'GET', action: 'index', middleware: [disallowRoles(Roles.GUEST), limitQuery('userId')]},
+        {route: '/:id', method: 'GET', action: 'read', middleware: [disallowRoles(Roles.GUEST), limitQuery('userId')]},
         {route: '/', method: 'POST', action: 'create', middleware: [disallowRoles(Roles.GUEST)]},
         {route: '/:id', method: 'PUT', action: 'update', middleware: [allowRoles(Roles.ADMIN)]},
         {route: '/:id', method: 'DELETE', action: 'delete', middleware: [allowRoles(Roles.ADMIN)]},
