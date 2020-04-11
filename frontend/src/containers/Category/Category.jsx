@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
@@ -11,6 +11,7 @@ import Spinner from '../../components/Spinner/Spinner'
 import Pagination from '../../components/Pagination/Pagination'
 import category from '../../types/category'
 import { checkPath, getCategoryIds, preparePathForBreadcrumbs } from '../../utils/helper'
+import usePagination from '../../utils/hooks/usePagination'
 import useStyles from './styles'
 
 const Category = ({ categories, setOpenCart }) => {
@@ -22,10 +23,7 @@ const Category = ({ categories, setOpenCart }) => {
 
   const limit = 10
 
-  const [offset, setOffset] = useState(0)
-  const setPage = (page) => setOffset(page * limit - limit)
-
-  const filter = JSON.stringify({ limit, offset, relations: { categories: { id: categoryIds } } })
+  const { setPage, filter } = usePagination({ limit, categoryIds })
 
   const { rawData, isLoading, isError } = useDataApi({
     url: `/products?filter=${filter}`,
