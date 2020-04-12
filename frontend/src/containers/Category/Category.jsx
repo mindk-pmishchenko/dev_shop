@@ -32,8 +32,7 @@ const Category = ({ categories, setOpenCart }) => {
   const products = rawData && !isError ? rawData.results : []
   const totalProducts = rawData && !isError ? rawData.total : 0
 
-  const pageCount = Math.ceil(totalProducts / limit)
-  const hasPagination = totalProducts > limit
+  const { pageCount, hasPagination } = usePagination({ limit, totalProducts })
 
   if (categories.length === 0) {
     return null
