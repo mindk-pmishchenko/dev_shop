@@ -26,6 +26,7 @@ const Checkout = ({ user }) => {
       try {
         await fetchData({ url: `/users/${id}`, method: 'PUT', data })
         await fetchData({ url: '/orders', method: 'POST', data: { details } })
+
         resolve()
       } catch (error) {
         reject(error)
@@ -33,15 +34,17 @@ const Checkout = ({ user }) => {
     })
   }
 
-  const handleSubmitSuccess = (result, reduxFormDispatch, { reset }) => {
+  const handleSubmitSuccess = (result, reduxFormDispatch, { values, initialize }) => {
     dispatch({ type: SHOW_SNACKBAR, payload: { message: 'Заказ успешно создан', type: 'success' } })
     setCart({})
-    reset()
-    history.push('/')
+    initialize(values)
+    // history.push('/')
   }
 
   const handleSubmitFail = (errors, reduxFormDispatch, submitError, props) => {
-    dispatch({ type: SHOW_SNACKBAR, payload: { message: 'Произошла ошибка при создании заказа', type: 'error' } })
+    if (submitError) {
+      dispatch({ type: SHOW_SNACKBAR, payload: { message: 'Произошла ошибка при создании заказа', type: 'error' } })
+    }
   }
 
   return (
