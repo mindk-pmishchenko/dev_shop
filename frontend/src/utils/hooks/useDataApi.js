@@ -1,9 +1,8 @@
 import { useReducer, useEffect } from 'react'
 import axios from 'axios'
 
-const FETCH_INIT = 'FETCH_INIT'
-const FETCH_SUCCESS = 'FETCH_SUCCESS'
-const FETCH_FAILURE = 'FETCH_FAILURE'
+import dataFetchReducer from '../../reducers/dataFetchReducer'
+import { FETCH_INIT, FETCH_SUCCESS, FETCH_FAILURE } from '../../constants/dataFetch'
 
 const initialState = {
   rawData: null,
@@ -12,34 +11,6 @@ const initialState = {
 }
 
 const API_URL = 'http://localhost:5000/api'
-const TOKEN = localStorage.getItem('token')
-
-const dataFetchReducer = (state, action) => {
-  switch (action.type) {
-    case FETCH_INIT:
-      return {
-        ...state,
-        isLoading: true,
-        IsError: false
-      }
-    case FETCH_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        isError: false,
-        rawData: action.payload
-      }
-    case FETCH_FAILURE:
-      return {
-        ...state,
-        isLoading: false,
-        isError: true,
-        rawData: action.payload
-      }
-    default:
-      throw new Error('Action is not found!')
-  }
-}
 
 export default function useDataApi({ url, method }) {
   const [state, dispatch] = useReducer(dataFetchReducer, initialState)
@@ -48,9 +19,9 @@ export default function useDataApi({ url, method }) {
     let ignore = false
 
     const fetchData = async () => {
-      dispatch({ type: FETCH_INIT })
+      const headers = { Authorization: `Bearer ${localStorage.getItem('bearer_token')}` }
 
-      const headers = TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}
+      dispatch({ type: FETCH_INIT })
 
       try {
         const result = await axios({
