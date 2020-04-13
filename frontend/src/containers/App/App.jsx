@@ -9,7 +9,9 @@ import CartContext from '../../context/cartContext'
 import SnackbarContext from '../../context/snackbarContext'
 import snackbarReducer from '../../reducers/snackbarReducer'
 import Layout from '../Layout/Layout'
+import Spinner from '../../components/Spinner/Spinner'
 import useStateWithLocalStorage from '../../utils/hooks/useStateWithLocalStorage'
+import useDataApi from '../../utils/hooks/useDataApi'
 
 const App = () => {
   const [cart, setCart] = useStateWithLocalStorage('cart')
@@ -21,14 +23,19 @@ const App = () => {
   const snackbarInitialState = { message: '', type: 'success', open: false }
   const snackbarContext = useReducer(snackbarReducer, snackbarInitialState)
 
+  // const token = localStorage.setItem('bearer_token', '468f1875-fcac-4936-9316-4c9880d7fdbe')
+  const { rawData, isLoading, isError } = useDataApi({
+    url: `/users?filter=${JSON.stringify({ token: localStorage.getItem('bearer_token') })}`,
+    method: 'GET'
+  })
+  const user = rawData && rawData.results && !isError ? rawData.results[0] : {}
+
   return (
     <ErrorBoundary>
       <Provider store={store}>
         <SnackbarContext.Provider value={snackbarContext}>
           <CartContext.Provider value={cartContext}>
-            <BrowserRouter>
-              <Layout />
-            </BrowserRouter>
+            <BrowserRouter>{isLoading ? <Spinner /> : <Layout user={user} />}</BrowserRouter>
           </CartContext.Provider>
         </SnackbarContext.Provider>
       </Provider>
