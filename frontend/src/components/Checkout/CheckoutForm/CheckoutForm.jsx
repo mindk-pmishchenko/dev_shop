@@ -4,6 +4,7 @@ import { reduxForm, Field } from 'redux-form'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
 import TextField from '../../TextField/TextField'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { email, required } from '../../../validation'
 import useStyles from './styles'
 
@@ -64,6 +65,7 @@ const CheckoutForm = ({ handleSubmit, reset, pristine, submitting }) => {
         </Button>
         <Button variant="contained" color="primary" onClick={handleSubmit} disabled={submitting}>
           Отправить
+          {submitting && <CircularProgress size={24} className={classes.buttonProgress} />}
         </Button>
       </ButtonGroup>
     </form>

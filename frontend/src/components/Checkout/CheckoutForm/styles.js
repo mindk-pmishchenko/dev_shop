@@ -8,6 +8,13 @@ const useStyles = makeStyles(() => ({
   buttonGroup: {
     alignSelf: 'flex-end',
     marginTop: 20
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12
   }
 }))
 
