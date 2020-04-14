@@ -24,10 +24,14 @@ const App = () => {
   const snackbarContext = useReducer(snackbarReducer, snackbarInitialState)
 
   // const token = localStorage.setItem('bearer_token', '468f1875-fcac-4936-9316-4c9880d7fdbe')
-  const { rawData, isLoading, isError } = useDataApi({
-    url: `/users?filter=${JSON.stringify({ token: localStorage.getItem('bearer_token') })}`,
-    method: 'GET'
-  })
+  const bearerToken = localStorage.getItem('bearer_token')
+  const { rawData, isLoading, isError } = useDataApi(
+    {
+      url: `/users?filter=${JSON.stringify({ token: bearerToken })}`,
+      method: 'GET'
+    },
+    bearerToken
+  )
   const user = rawData && rawData.results && !isError ? rawData.results[0] : {}
 
   return (
