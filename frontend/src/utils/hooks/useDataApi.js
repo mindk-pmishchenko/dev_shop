@@ -12,43 +12,45 @@ const initialState = {
 
 const API_URL = 'http://localhost:5000/api'
 
-export default function useDataApi({ url, method }) {
+export default function useDataApi({ url, method }, condition = true) {
   const [state, dispatch] = useReducer(dataFetchReducer, initialState)
 
   useEffect(() => {
-    let ignore = false
+    if (condition) {
+      let ignore = false
 
-    const fetchData = async () => {
-      const headers = { Authorization: `Bearer ${localStorage.getItem('bearer_token')}` }
+      const fetchData = async () => {
+        const headers = { Authorization: `Bearer ${localStorage.getItem('bearer_token')}` }
 
-      dispatch({ type: FETCH_INIT })
+        dispatch({ type: FETCH_INIT })
 
-      try {
-        const result = await axios({
-          url: `${API_URL}${url}`,
-          method,
-          headers
-        })
-
-        if (!ignore) {
-          dispatch({ type: FETCH_SUCCESS, payload: result.data.data })
-        }
-      } catch (error) {
-        if (error.response) {
-          dispatch({
-            type: FETCH_FAILURE,
-            payload: error.response.data.error
+        try {
+          const result = await axios({
+            url: `${API_URL}${url}`,
+            method,
+            headers
           })
-        } else {
-          dispatch({ type: FETCH_FAILURE, payload: error.message })
+
+          if (!ignore) {
+            dispatch({ type: FETCH_SUCCESS, payload: result.data.data })
+          }
+        } catch (error) {
+          if (error.response) {
+            dispatch({
+              type: FETCH_FAILURE,
+              payload: error.response.data.error
+            })
+          } else {
+            dispatch({ type: FETCH_FAILURE, payload: error.message })
+          }
         }
       }
+
+      fetchData()
+
+      return () => (ignore = true)
     }
-
-    fetchData()
-
-    return () => (ignore = true)
-  }, [url, method])
+  }, [url, method, condition])
 
   return state
 }
