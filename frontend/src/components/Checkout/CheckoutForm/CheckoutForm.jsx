@@ -1,73 +1,103 @@
-import React from 'react'
-import { reduxForm, Field } from 'redux-form'
-
+import React, { useEffect } from 'react'
+import TextField from '@material-ui/core/TextField'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
-import TextField from '../../TextField/TextField'
-import { email, required } from '../../../validation'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import PropTypes from 'prop-types'
+import { useForm } from 'react-hook-form'
+
+import CheckoutSchema from '../../../validationSchemas/CheckoutSchema'
+import user from '../../../types/user'
 import useStyles from './styles'
 
-const CheckoutForm = ({ handleSubmit, reset, pristine, submitting }) => {
+const CheckoutForm = ({ defaultValues, onSubmit }) => {
+  const { handleSubmit, register, formState, reset, errors } = useForm({
+    validationSchema: CheckoutSchema,
+    mode: 'onChange',
+    reValidateMode: 'onChange'
+  })
+  const { isSubmitting, dirty } = formState
+
+  useEffect(() => reset(defaultValues), [defaultValues, reset])
+
+  const handleResetForm = () => reset(defaultValues)
+
   const classes = useStyles()
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit}>
-      <Field
+    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      <TextField
         label="Имя:"
         name="firstName"
         type="text"
-        component={TextField}
-        validate={[required]}
+        error={!!errors.firstName}
+        helperText={errors.firstName && errors.firstName.message}
+        inputRef={register}
+        InputLabelProps={{ shrink: true }}
         margin="normal"
         fullWidth
       />
-      <Field
+      <TextField
         label="Фамилия:"
         name="lastName"
         type="text"
-        component={TextField}
-        validate={[required]}
+        error={!!errors.lastName}
+        helperText={errors.lastName && errors.lastName.message}
+        inputRef={register}
+        InputLabelProps={{ shrink: true }}
         margin="normal"
         fullWidth
       />
-      <Field
+      <TextField
         label="Адрес:"
         name="address"
         type="text"
-        component={TextField}
-        validate={[required]}
+        error={!!errors.address}
+        helperText={errors.address && errors.address.message}
+        inputRef={register}
+        InputLabelProps={{ shrink: true }}
         margin="normal"
         fullWidth
       />
-      <Field
+      <TextField
         label="Email:"
         name="email"
         type="text"
-        component={TextField}
-        validate={[required, email]}
+        error={!!errors.email}
+        helperText={errors.email && errors.email.message}
+        inputRef={register}
+        InputLabelProps={{ shrink: true }}
         margin="normal"
         fullWidth
       />
-      <Field
+      <TextField
         label="Телефон:"
         name="mobilePhone"
         type="text"
-        component={TextField}
-        validate={[required]}
+        error={!!errors.mobilePhone}
+        helperText={errors.mobilePhone && errors.mobilePhone.message}
+        inputRef={register}
+        InputLabelProps={{ shrink: true }}
         margin="normal"
         fullWidth
       />
 
       <ButtonGroup className={classes.buttonGroup}>
-        <Button variant="contained" color="secondary" onClick={reset} disabled={pristine || submitting}>
+        <Button variant="contained" color="secondary" onClick={handleResetForm} disabled={!dirty || isSubmitting}>
           Очистить
         </Button>
-        <Button variant="contained" color="primary" onClick={handleSubmit} disabled={submitting}>
+        <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} disabled={isSubmitting}>
           Отправить
+          {isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
         </Button>
       </ButtonGroup>
     </form>
   )
 }
 
-export default reduxForm({ form: 'checkout' })(CheckoutForm)
+CheckoutForm.propTypes = {
+  defaultValues: user,
+  onSubmit: PropTypes.func.isRequired
+}
+
+export default CheckoutForm
