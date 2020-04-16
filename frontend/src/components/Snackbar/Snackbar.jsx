@@ -3,16 +3,16 @@ import MSnackbar from '@material-ui/core/Snackbar'
 import MAlert from '@material-ui/lab/Alert'
 
 import SnackbarContext from '../../context/snackbarContext'
-import { HIDE_SNACKBAR } from '../../constants/snackbar'
 
 const Snackbar = () => {
-  const [{ message, type, open }, dispatch] = useContext(SnackbarContext)
+  const { snackbarState, hideSnackbar } = useContext(SnackbarContext)
+  const { message, type, open } = snackbarState
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return
     }
-    dispatch({ type: HIDE_SNACKBAR })
+    hideSnackbar()
   }
 
   return (

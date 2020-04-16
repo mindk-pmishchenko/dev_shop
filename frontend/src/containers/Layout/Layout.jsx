@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import Grid from '@material-ui/core/Grid'
 import { Switch, Route } from 'react-router-dom'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 import useDataApi from '../../utils/hooks/useDataApi'
 import Menu from '../Menu/Menu'
@@ -9,16 +10,31 @@ import Category from '../Category/Category'
 import Cart from '../../components/Cart/Cart'
 import Error from '../../components/Error/Error'
 import CartContext from '../../context/cartContext'
+import AppContext from '../../context/appContext'
 import Checkout from '../../components/Checkout/Checkout'
-import useStyles from './styles'
 import Snackbar from '../../components/Snackbar/Snackbar'
+import useStyles from './styles'
 
-const Layout = ({ user }) => {
-  const { rawData, isLoading, isError } = useDataApi({
+const Layout = () => {
+  const { setUser } = useContext(AppContext)
+
+  const { rawData: categoriesRawData, isLoading: isCategoriesLoading, isError: isCategoriesError } = useDataApi({
     url: '/categories?filter={"limit": 100}',
     method: 'GET'
   })
-  const categories = rawData && !isError ? rawData.results : []
+  const categories = categoriesRawData && !isCategoriesError ? categoriesRawData.results : []
+
+  const bearerToken = localStorage.getItem('bearer_token')
+  const { rawData: userRawData, isLoading: isUserLoading, isError: isUserError } = useDataApi(
+    {
+      url: `/users?filter=${JSON.stringify({ token: bearerToken })}`,
+      method: 'GET'
+    },
+    bearerToken
+  )
+  const user = userRawData && userRawData.results && !isUserError ? userRawData.results[0] : {}
+
+  useDeepCompareEffect(() => setUser(user), [user])
 
   const [openCart, setOpenCart] = useState(false)
   const handleCloseCart = () => setOpenCart(false)
@@ -50,12 +66,14 @@ const Layout = ({ user }) => {
 
   const classes = useStyles()
 
-  return (
+  return isUserLoading ? (
+    <Spinner />
+  ) : (
     <>
       <Grid container className={classes.app}>
         <Grid container direction="row" spacing={3}>
           <Grid className={classes.menu1} item xs={12} sm={4} md={3}>
-            {isLoading ? <Spinner /> : <Menu categories={categories} />}
+            {isCategoriesLoading ? <Spinner /> : <Menu categories={categories} />}
           </Grid>
           <Grid className={classes.mainSection1} item xs={12} sm={8} md={9}>
             <Switch>
@@ -66,7 +84,7 @@ const Layout = ({ user }) => {
                 <Checkout user={user} />
               </Route>
               <Route path="/category">
-                {isLoading ? <Spinner /> : <Category categories={categories} setOpenCart={setOpenCart} />}
+                {isCategoriesLoading ? <Spinner /> : <Category categories={categories} setOpenCart={setOpenCart} />}
               </Route>
               <Route>
                 <Error />
