@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types'
 
-const user = PropTypes.shape({
-  id: PropTypes.number,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  address: PropTypes.string,
-  email: PropTypes.string,
-  mobilePhone: PropTypes.string
+const userSchema = PropTypes.shape({
+  id: PropTypes.number.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  mobilePhone: PropTypes.string.isRequired
 })
+
+const user = PropTypes.oneOfType([PropTypes.exact({}), userSchema]).isRequired
 
 export default user
