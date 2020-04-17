@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-const usePagination = ({ limit, categoryIds = [], totalProducts = 0 }) => {
+const usePagination = ({ limit, query, totalProducts = 0 }) => {
   const [offset, setOffset] = useState(0)
 
-  const filter = JSON.stringify({ limit, offset, relations: { categories: { id: categoryIds } } })
+  const filter = JSON.stringify({ limit, offset, ...query })
 
   const setPage = (page) => setOffset(page * limit - limit)
 
