@@ -15,14 +15,15 @@ const Checkout = () => {
 
   const { showSnackbar } = useContext(SnackbarContext)
 
-  const { appState, setUser } = useContext(AppContext)
+  const { authData } = useContext(AppContext)
+  const { userData, handleUserLogin } = authData
 
   if (!products) {
     return <Redirect to="/" />
   }
 
-  const userId = appState.user.id
-  const defaultValues = appState.user
+  const userId = userData.id
+  const defaultValues = userData
 
   const details = products.map(({ id: productId, quantity }) => ({ productId, quantity }))
 
@@ -30,7 +31,7 @@ const Checkout = () => {
     try {
       const userResponse = await fetchData({ url: `/users/${userId}`, method: 'PUT', data })
       if (userResponse.success) {
-        setUser(userResponse.data)
+        handleUserLogin(userResponse.data)
 
         const orderResponse = await fetchData({ url: '/orders', method: 'POST', data: { details } })
         if (orderResponse.success) {
