@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-const initialContext = { userData: {} }
+const initialContext = {}
 
 const AppContext = createContext(initialContext)
 
