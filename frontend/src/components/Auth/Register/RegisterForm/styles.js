@@ -1,8 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
-  appBarContainer: {
-    marginBottom: 15
+  form: {
+    display: 'flex',
+    flexDirection: 'column'
   }
 }))
 

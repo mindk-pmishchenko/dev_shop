@@ -3,8 +3,8 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
 
-import Product from './Product/Product'
-import product from '../../types/product'
+import Product from '../Product/Product'
+import product from '../../../types/product'
 import useStyles from './styles'
 
 const ProductList = ({ products, setOpenCart }) => {

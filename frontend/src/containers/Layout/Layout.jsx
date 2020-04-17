@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react'
 import Grid from '@material-ui/core/Grid'
-import { Switch, Route } from 'react-router-dom'
 import useDeepCompareEffect from 'use-deep-compare-effect'
+import { Switch, Route } from 'react-router-dom'
+import { isEmpty } from 'lodash-es'
+import { useLocation } from 'react-router-dom'
 
 import useDataApi from '../../utils/hooks/useDataApi'
 import Menu from '../Menu/Menu'
@@ -9,14 +11,23 @@ import Spinner from '../../components/Spinner/Spinner'
 import Category from '../Category/Category'
 import Cart from '../../components/Cart/Cart'
 import Error from '../../components/Error/Error'
+import AppBar from '../../components/AppBar/AppBar'
+import Auth from '../../components/Auth/Auth'
+import NewProducts from '../../components/NewProducts/NewProducts'
+import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import CartContext from '../../context/cartContext'
 import AppContext from '../../context/appContext'
 import Checkout from '../../components/Checkout/Checkout'
 import Snackbar from '../../components/Snackbar/Snackbar'
+import { preparePathForBreadcrumbs } from '../../utils/helper'
 import useStyles from './styles'
 
 const Layout = () => {
-  const { setUser } = useContext(AppContext)
+  const { pathname } = useLocation()
+  const breadcrumbs = preparePathForBreadcrumbs(pathname)
+
+  const { authData } = useContext(AppContext)
+  const { handleUserLogin } = authData
 
   const { rawData: categoriesRawData, isLoading: isCategoriesLoading, isError: isCategoriesError } = useDataApi({
     url: '/categories?filter={"limit": 100}',
@@ -34,7 +45,11 @@ const Layout = () => {
   )
   const user = userRawData && userRawData.results && !isUserError ? userRawData.results[0] : {}
 
-  useDeepCompareEffect(() => setUser(user), [user])
+  useDeepCompareEffect(() => {
+    if (!isEmpty(user)) {
+      handleUserLogin(user)
+    }
+  }, [user])
 
   const [openCart, setOpenCart] = useState(false)
   const handleCloseCart = () => setOpenCart(false)
@@ -70,18 +85,25 @@ const Layout = () => {
     <Spinner />
   ) : (
     <>
-      <Grid container className={classes.app}>
+      <Grid container>
+        <Grid container className={classes.appBarContainer}>
+          <AppBar setOpenCart={setOpenCart} />
+        </Grid>
         <Grid container direction="row" spacing={3}>
-          <Grid className={classes.menu1} item xs={12} sm={4} md={3}>
+          <Grid item xs={12} sm={4} md={3}>
             {isCategoriesLoading ? <Spinner /> : <Menu categories={categories} />}
           </Grid>
-          <Grid className={classes.mainSection1} item xs={12} sm={8} md={9}>
+          <Grid item xs={12} sm={8} md={9}>
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
             <Switch>
               <Route exact path="/">
-                Main page
+                <NewProducts setOpenCart={setOpenCart} />
               </Route>
               <Route exact path="/checkout">
                 <Checkout user={user} />
+              </Route>
+              <Route path="/auth">
+                <Auth />
               </Route>
               <Route path="/category">
                 {isCategoriesLoading ? <Spinner /> : <Category categories={categories} setOpenCart={setOpenCart} />}

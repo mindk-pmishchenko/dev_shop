@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
-  appBarContainer: {
-    marginBottom: 15
+  toolbar: {
+    justifyContent: 'space-between'
   }
 }))
 

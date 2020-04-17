@@ -1,8 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
-  appBarContainer: {
-    marginBottom: 15
+  userPanel: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   }
 }))
 
