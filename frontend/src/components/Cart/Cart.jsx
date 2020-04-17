@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -8,12 +8,16 @@ import { Link } from 'react-router-dom'
 
 import CartEmpty from './CartEmpty/CartEmpty'
 import CartDetails from './CartDetails/CartDetails'
+import AppContext from '../../context/appContext'
 import useStyles from './styles'
 
 const Cart = ({ open, onClose, cart, handleDeleteProduct, setProductCount }) => {
   const products = cart.products || []
 
   const cartIsEmpty = !products.length
+
+  const { authData } = useContext(AppContext)
+  const { isAuth } = authData
 
   const classes = useStyles()
 
@@ -39,7 +43,7 @@ const Cart = ({ open, onClose, cart, handleDeleteProduct, setProductCount }) => 
           component={Link}
           variant="contained"
           color="primary"
-          to="/checkout"
+          to={isAuth ? '/checkout' : '/auth/login'}
           disabled={cartIsEmpty}
           onClick={onClose}
         >
