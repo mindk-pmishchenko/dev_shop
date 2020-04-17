@@ -15,8 +15,8 @@ passport.use(
             if (!passwordsAreEqual) {
                 return done(null, false, {message: 'Wrong credentials supplied.'});
             }
-            await user.updateToken();
-            return done(null, user, {message: 'Logged in successfully!'});
+            const token = await user.updateToken();
+            return done(null, {...user, token}, {message: 'Logged in successfully!'});
         } catch (error) {
             return done(error);
         }
@@ -43,9 +43,7 @@ passport.use(
         {usernameField: 'username', passwordField: 'password', passReqToCallback: true},
         async ({body}, username, password, done) => {
             try {
-                const user = await User.query()
-                    .insert(body)
-                    .returning('*');
+                const user = await User.query().insert(body).returning('*');
                 return done(null, user, {message: 'User created successfully!'});
             } catch (error) {
                 return done(error);
