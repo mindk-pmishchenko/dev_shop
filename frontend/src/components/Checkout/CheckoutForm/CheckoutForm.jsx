@@ -6,13 +6,13 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 
-import CheckoutSchema from '../../../validationSchemas/CheckoutSchema'
+import UserSchema from '../../../validationSchemas/UserSchema'
 import user from '../../../types/user'
 import useStyles from './styles'
 
 const CheckoutForm = ({ defaultValues, onSubmit }) => {
   const { handleSubmit, register, formState, reset, errors } = useForm({
-    validationSchema: CheckoutSchema,
+    validationSchema: UserSchema,
     mode: 'onChange',
     reValidateMode: 'onChange'
   })
