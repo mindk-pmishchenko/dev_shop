@@ -35,18 +35,26 @@ class BaseController {
             return rules;
         };
 
-        const relationFiltersRules = filters => builder => {
-            const filterRules = {};
+        const applyFilters = filters => builder => {
             for (const filter in filters) {
-                for (const field in filters[filter]) {
-                    if (filters[filter][field] instanceof Array) {
-                        builder.whereIn(`${filter}.${field}`, filters[filter][field]);
-                    } else {
-                        filterRules[`${filter}.${field}`] = filters[filter][field];
+                const filterValue = filters[filter];
+
+                if (filterValue instanceof Array) {
+                    builder.whereIn(filter, filterValue);
+                } else if (filterValue instanceof Object) {
+                    for (const field in filterValue) {
+                        const filterValue = filters[filter][field];
+
+                        if (filterValue instanceof Array) {
+                            builder.whereIn(`${filter}.${field}`, filterValue);
+                        } else {
+                            builder.where(`${filter}.${field}`, filterValue);
+                        }
                     }
+                } else {
+                    builder.where(filters);
                 }
             }
-            builder.where(filterRules);
         };
 
         res.status(200).json(
@@ -60,15 +68,10 @@ class BaseController {
                                 : null
                         )
                         .joinRelated(`${Object.keys(relationFilters)}`)
-                        .modify(relationFiltersRules(relationFilters))
+                        .modify(applyFilters(relationFilters))
                         .orderBy(orderRules)
-                        .modify(builder => {
-                            if (queryCondition) {
-                                builder.where(queryCondition).andWhere(filters);
-                            } else {
-                                builder.where(filters);
-                            }
-                        })
+                        .modify(builder => (queryCondition ? builder.where(queryCondition) : builder))
+                        .modify(applyFilters(filters))
                         .range(offset, limit + offset - 1)
                 )
             )
@@ -84,6 +87,8 @@ class BaseController {
     }
 
     async update(req, res) {
+        await this.model.checkUnique(req.body, req.user);
+
         res.status(200).json(
             successResponse(await this.model.query().patchAndFetchById(req.params.id, req.body).throwIfNotFound())
         );
