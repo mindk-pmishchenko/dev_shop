@@ -28,13 +28,13 @@ const TableProducts = ({ totalPrice, details, products }) => (
         </TableHead>
         <TableBody>
           {details.map(({ id, quantity, sumPrice, productId }, index) => {
-            const { name, price } = products.find(({ id }) => id === productId)
+            const product = products.find(({ id }) => id === productId)
 
             return (
               <TableRow key={id}>
                 <TableCell align="center">{++index}</TableCell>
-                <TableCell>{name}</TableCell>
-                <TableCell align="right">{`${price} ₴`}</TableCell>
+                <TableCell>{product && product.name}</TableCell>
+                <TableCell align="right">{`${product && product.price} ₴`}</TableCell>
                 <TableCell align="center">{quantity}</TableCell>
                 <TableCell align="right">{`${sumPrice} ₴`}</TableCell>
               </TableRow>
