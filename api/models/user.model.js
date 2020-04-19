@@ -2,14 +2,15 @@ const Base = require('./base.model');
 const Password = require('objection-password')();
 const uuid = require('uuid/v4');
 class User extends Password(Base) {
+    static uniqueFields = ['username', 'email', 'mobilePhone'];
+
     static get tableName() {
         return 'users';
     }
 
     async $beforeInsert(context) {
         await super.$beforeInsert(context);
-        const {username, email, mobilePhone} = this;
-        await User.checkUnique({username, email, mobilePhone});
+        await User.checkUnique(this);
         this.token = uuid();
     }
 

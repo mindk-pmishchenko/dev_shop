@@ -9,7 +9,7 @@ import snackbarReducer from '../../reducers/snackbarReducer'
 import { SHOW_SNACKBAR, HIDE_SNACKBAR } from '../../constants/snackbar'
 import AppContext from '../../context/appContext'
 import authReducer from '../../reducers/authReducer'
-import { SET_LOGIN, SET_GUEST } from '../../constants/auth'
+import { SET_LOGIN, SET_GUEST, SET_LOADING } from '../../constants/auth'
 import useStateWithLocalStorage from '../../utils/hooks/useStateWithLocalStorage'
 
 const App = () => {
@@ -22,11 +22,16 @@ const App = () => {
   const hideSnackbar = () => snackbarDispatch({ type: HIDE_SNACKBAR })
   const snackbarContext = { snackbarState, showSnackbar, hideSnackbar }
 
-  const authInitialState = { authData: { userData: {}, isAuth: false }, isLoading: false }
+  const authInitialState = { authData: { userData: {}, isAuth: false }, isLoading: true }
   const [authState, authDispatch] = useReducer(authReducer, authInitialState)
   const handleUserLogin = (userData) => authDispatch({ type: SET_LOGIN, payload: userData })
   const handleUserLogout = () => authDispatch({ type: SET_GUEST })
-  const appContext = { authData: { ...authState.authData, handleUserLogin, handleUserLogout } }
+  const handleUserLoading = () => authDispatch({ type: SET_LOADING })
+  const appContext = {
+    authData: { ...authState.authData, handleUserLogin, handleUserLogout },
+    isLoading: authState.isLoading,
+    handleUserLoading
+  }
 
   return (
     <ErrorBoundary>

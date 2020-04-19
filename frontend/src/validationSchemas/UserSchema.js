@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 
-const CheckoutSchema = yup.object().shape({
+const UserSchema = yup.object().shape({
   firstName: yup.string().required('Укажите имя!'),
   lastName: yup.string().required('Укажите фамилию!'),
   address: yup.string().required('Укажите адрес!'),
@@ -8,4 +8,4 @@ const CheckoutSchema = yup.object().shape({
   mobilePhone: yup.string().required('Укажите мобильный телефон!')
 })
 
-export default CheckoutSchema
+export default UserSchema

@@ -1,23 +1,41 @@
-import React, { useContext } from 'react'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import { Link as RouterLink } from 'react-router-dom'
+import React, { useState, createRef } from 'react'
+import Menu from '@material-ui/core/Menu'
+import IconButton from '@material-ui/core/IconButton'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 
-import AppContext from '../../../../context/appContext'
-import useStyles from './styles'
+import MenuItemLink from '../../../MenuItemLink/MenuItemLink'
 
 const UserPanel = () => {
-  const { authData } = useContext(AppContext)
-  const { userData } = authData
+  const [anchorEl, setAnchorEl] = useState(null)
+  const handleMenu = (event) => setAnchorEl(event.currentTarget)
+  const handleClose = () => setAnchorEl(null)
+  const open = Boolean(anchorEl)
 
-  const classes = useStyles()
+  const ref = createRef()
 
   return (
-    <div className={classes.userPanel}>
-      <Typography>{`Привет ${userData.firstName}, `}</Typography>
-      <Button color="inherit" component={RouterLink} to="/auth/logout">
-        Выйти
-      </Button>
+    <div>
+      <IconButton onClick={handleMenu} color="inherit">
+        <AccountCircle />
+      </IconButton>
+      <Menu
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        keepMounted
+      >
+        <MenuItemLink ref={ref} handleClose={handleClose} to="/profile">
+          Профиль
+        </MenuItemLink>
+        <MenuItemLink ref={ref} handleClose={handleClose} to="/orders">
+          Заказы
+        </MenuItemLink>
+        <MenuItemLink ref={ref} handleClose={handleClose} to="/auth/logout">
+          Выйти
+        </MenuItemLink>
+      </Menu>
     </div>
   )
 }

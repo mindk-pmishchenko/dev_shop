@@ -1,26 +1,29 @@
-import React from 'react'
-import Grid from '@material-ui/core/Grid'
+import React, { useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 
-import RegisterSchema from '../../../../validationSchemas/RegisterSchema'
-import { setServerValidationErrors } from '../../../../utils/helper'
+import UserSchema from '../../../validationSchemas/UserSchema'
+import user from '../../../types/user'
+import { setServerValidationErrors } from '../../../utils/helper'
 import useStyles from './styles'
 
-const RegisterForm = ({ onSubmit }) => {
-  const { handleSubmit, register, formState, errors, reset, setError } = useForm({
-    validationSchema: RegisterSchema,
+const UserProfileForm = ({ onSubmit, defaultValues }) => {
+  const { handleSubmit, register, formState, reset, errors, setError } = useForm({
+    validationSchema: UserSchema,
     mode: 'onChange',
     reValidateMode: 'onChange'
   })
   const { isSubmitting } = formState
 
+  useEffect(() => reset(defaultValues), [defaultValues, reset])
+
   const customSubmitHandler = async (...args) => {
     try {
       await onSubmit(...args)
-      reset()
     } catch (error) {
       setServerValidationErrors(error, setError)
     }
@@ -36,17 +39,6 @@ const RegisterForm = ({ onSubmit }) => {
         type="text"
         error={!!errors.username}
         helperText={errors.username && errors.username.message}
-        inputRef={register}
-        InputLabelProps={{ shrink: true }}
-        margin="normal"
-        fullWidth
-      />
-      <TextField
-        label="Пароль:"
-        name="password"
-        type="password"
-        error={!!errors.password}
-        helperText={errors.password && errors.password.message}
         inputRef={register}
         InputLabelProps={{ shrink: true }}
         margin="normal"
@@ -75,22 +67,22 @@ const RegisterForm = ({ onSubmit }) => {
         fullWidth
       />
       <TextField
-        label="Email:"
-        name="email"
+        label="Адрес:"
+        name="address"
         type="text"
-        error={!!errors.email}
-        helperText={errors.email && errors.email.message}
+        error={!!errors.address}
+        helperText={errors.address && errors.address.message}
         inputRef={register}
         InputLabelProps={{ shrink: true }}
         margin="normal"
         fullWidth
       />
       <TextField
-        label="Адрес:"
-        name="address"
+        label="Email:"
+        name="email"
         type="text"
-        error={!!errors.address}
-        helperText={errors.address && errors.address.message}
+        error={!!errors.email}
+        helperText={errors.email && errors.email.message}
         inputRef={register}
         InputLabelProps={{ shrink: true }}
         margin="normal"
@@ -108,14 +100,19 @@ const RegisterForm = ({ onSubmit }) => {
         fullWidth
       />
 
-      <Grid container justify="flex-end" alignItems="center">
+      <ButtonGroup className={classes.buttonGroup}>
         <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} disabled={isSubmitting}>
-          Отправить
+          Сохранить
           {isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
         </Button>
-      </Grid>
+      </ButtonGroup>
     </form>
   )
 }
 
-export default RegisterForm
+UserProfileForm.propTypes = {
+  defaultValues: user,
+  onSubmit: PropTypes.func.isRequired
+}
+
+export default UserProfileForm
