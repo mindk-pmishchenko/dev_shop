@@ -1,7 +1,7 @@
 import * as yup from 'yup'
 
 const RegisterSchema = yup.object().shape({
-  username: yup.string().required('Укажите имя!').min(6, 'Не менее 6 символов!'),
+  username: yup.string().required('Укажите логин!').min(6, 'Не менее 6 символов!'),
   password: yup.string().required('Укажите пароль!').min(6, 'Не менее 6 символов!'),
   firstName: yup.string().required('Укажите имя!').min(2, 'Не менее 2 символов!'),
   lastName: yup.string().required('Укажите фамилию!').min(4, 'Не менее 4 символов!'),
