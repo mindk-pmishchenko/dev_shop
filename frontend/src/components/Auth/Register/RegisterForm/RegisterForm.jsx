@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -6,26 +6,23 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { useForm } from 'react-hook-form'
 
 import RegisterSchema from '../../../../validationSchemas/RegisterSchema'
-import { formatErrors } from '../../../../utils/helper'
+import { setServerValidationErrors } from '../../../../utils/helper'
 import useStyles from './styles'
 
 const RegisterForm = ({ onSubmit }) => {
-  const { handleSubmit, register, formState, errors: validationErrors, reset } = useForm({
+  const { handleSubmit, register, formState, errors, reset, setError } = useForm({
     validationSchema: RegisterSchema,
     mode: 'onChange',
     reValidateMode: 'onChange'
   })
   const { isSubmitting } = formState
 
-  const [errors, setErrors] = useState(validationErrors)
-
   const customSubmitHandler = async (...args) => {
     try {
       await onSubmit(...args)
       reset()
     } catch (error) {
-      const serverValidationErrors = error.response.data.error
-      setErrors(formatErrors(serverValidationErrors))
+      setServerValidationErrors(error, setError)
     }
   }
 
@@ -59,7 +56,7 @@ const RegisterForm = ({ onSubmit }) => {
         label="Имя:"
         name="firstName"
         type="text"
-        error={!!errors.firstname}
+        error={!!errors.firstName}
         helperText={errors.firstName && errors.firstName.message}
         inputRef={register}
         InputLabelProps={{ shrink: true }}
