@@ -14,11 +14,12 @@ import useStyles from './styles'
 
 const Product = ({ product, setOpenCart }) => {
   const { cart, setCart } = useContext(CartContext)
+  const { products = [] } = cart
 
-  const productInCart = cart.products && cart.products.find((cartProduct) => cartProduct.id === product.id)
+  const productInCart = products.find((cartProduct) => cartProduct.id === product.id)
 
   const createNewCart = () => {
-    const newCart = { ...cart, products: cart.products ? cart.products : [] }
+    const newCart = { ...cart, products }
 
     if (!productInCart) {
       newCart.products.push({ ...product, quantity: 1 })
