@@ -1,6 +1,6 @@
-const express = require("express");
-const orderController = require("../controllers/orderController");
-const authController = require("../controllers/authController");
+const express = require('express');
+const orderController = require('../controllers/orderController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -13,32 +13,24 @@ const router = express.Router();
 //2 - admin
 
 router
-  .route("/status/:id")
-  .patch(
-    authController.protect,
-    authController.restictTo(2),
-    orderController.updateOrder
-  )
-  .delete(
-    authController.protect,
-    authController.restictTo(2),
-    orderController.deleteOrder
-  );
+    .route('/status/:id')
+    .patch(authController.protect, authController.restictTo(2), orderController.updateOrder)
+    .delete(authController.protect, authController.restictTo(2), orderController.deleteOrder);
 //
-router
-  .route("/cart/:id/:quantity")
-  .post(authController.protect, orderController.addToCart);
+router.route('/cart/:id/:quantity').post(authController.protect, orderController.addToCart);
 
 router
-  .route("/cart/:id")
-  .delete(authController.protect, orderController.deleteFromCart);
+    .route('/change-cart-item-quantity/:id/:action')
+    .post(authController.protect, orderController.changeItemQuantity);
+
+router.route('/cart/:id').delete(authController.protect, orderController.deleteFromCart);
 //
-router.route("/:id").get(authController.protect, orderController.getOneOrder);
+router.route('/:id').get(authController.protect, orderController.getOneOrder);
 
 router
-  .route("/")
+    .route('/')
 
-  .get(authController.protect, orderController.getAllOrders)
-  .post(authController.protect, orderController.checkout);
+    .get(authController.protect, orderController.getAllOrders)
+    .post(authController.protect, orderController.checkout);
 
 module.exports = router;

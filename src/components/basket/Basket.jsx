@@ -20,6 +20,7 @@ import { useSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 
 import BasketContext from '../../context/basketContext';
+import { axiousCustomRequest } from './../../utils/helpers';
 
 const useStyles = makeStyles({
     table: {
@@ -39,10 +40,7 @@ function Basket({ open, onClose, basket }) {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const {
-        itemsInCartQuantityContext: {
-            itemsInCartQuantity,
-            setItemsInCartQuantity,
-        },
+        itemsInCartQuantityContext: { itemsInCartQuantity, setItemsInCartQuantity },
     } = useContext(BasketContext);
 
     const {
@@ -67,17 +65,54 @@ function Basket({ open, onClose, basket }) {
 
         return op === 'remove'
             ? [...currentPrev.slice(0, idx), ...currentPrev.slice(idx + 1)]
-            : [
-                  ...currentPrev.slice(0, idx),
-                  updatedItem,
-                  ...currentPrev.slice(idx + 1),
-              ];
+            : [...currentPrev.slice(0, idx), updatedItem, ...currentPrev.slice(idx + 1)];
+    };
+
+    const changeCartItemAPI = async (id, action) => {
+        const authToken = localStorage.getItem('bearer_token');
+        const config = {
+            url: '',
+            method: 'post',
+            headers: { Authorization: `Bearer ${authToken}` },
+        };
+
+        switch (action) {
+            case 'inc':
+                config.url = `/api/orders/change-cart-item-quantity/${id}/inc`;
+                break;
+            case 'dec':
+                config.url = `/api/orders/change-cart-item-quantity/${id}/dec`;
+                break;
+
+            case 'del':
+                config.url = `/api/orders/cart/${id}`;
+                config.method = 'delete';
+                break;
+
+            default:
+                break;
+        }
+
+        const accessData = axiousCustomRequest(config);
+        return await accessData
+            .then((res) => {
+                return;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     const handleIncQuantity = (id) => {
         setBasket((prevBasket) => {
+            const apiResponse = changeCartItemAPI(id, 'inc');
+            if (!apiResponse) {
+                return false;
+            }
+
             let tempResult;
             let currentPrev = [...prevBasket];
+
             const idx = currentPrev.findIndex((el) => el.id === id);
             if (idx > -1) {
                 tempResult = updateCurrentItem(currentPrev, idx, 'inc');
@@ -104,7 +139,10 @@ function Basket({ open, onClose, basket }) {
                     });
                     return prevBasket;
                 }
-
+                const apiResponse = changeCartItemAPI(id, 'dec');
+                if (!apiResponse) {
+                    return false;
+                }
                 tempResult = updateCurrentItem(currentPrev, idx, 'dec');
             } else {
                 console.log('Error');
@@ -124,7 +162,12 @@ function Basket({ open, onClose, basket }) {
 
             const idx = currentPrev.findIndex((el) => el.id === id);
             if (idx > -1) {
-                tempResult = updateCurrentItem(currentPrev, idx, 'remove');
+                const apiResponse = changeCartItemAPI(id, 'del');
+                if (!apiResponse) {
+                    return false;
+                } else {
+                    tempResult = updateCurrentItem(currentPrev, idx, 'remove');
+                }
             } else {
                 console.log('Error');
                 return prevBasket;
@@ -143,8 +186,7 @@ function Basket({ open, onClose, basket }) {
 
     products.forEach((product) => {
         total = parseInt(product[1].price, 10)
-            ? total +
-              parseInt(product[1].price, 10) * parseInt(product[1].quantity, 10)
+            ? total + parseInt(product[1].price, 10) * parseInt(product[1].quantity, 10)
             : total;
 
         quantityInCart = parseInt(product[1].quantity, 10)
@@ -163,8 +205,7 @@ function Basket({ open, onClose, basket }) {
                             <Grid item xs={12}>
                                 <Grid container justify="center">
                                     <Typography variant="h5">
-                                        Корзина пуста.... Выберите свой первый
-                                        товар
+                                        Корзина пуста.... Выберите свой первый товар
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -173,34 +214,22 @@ function Basket({ open, onClose, basket }) {
                     {!baskIsEmpty && (
                         <Grid container>
                             <TableContainer component={Paper}>
-                                <Table
-                                    className={classes.table}
-                                    aria-label="simple table"
-                                >
+                                <Table className={classes.table} aria-label="simple table">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell>Наименование</TableCell>
-                                            <TableCell align="right">
-                                                Количество
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                Цена
-                                            </TableCell>
+                                            <TableCell align="right">Количество</TableCell>
+                                            <TableCell align="right">Цена</TableCell>
                                             <TableCell align="right">
                                                 Редактировать кол-во
                                             </TableCell>
-                                            <TableCell align="right">
-                                                Удалить
-                                            </TableCell>
+                                            <TableCell align="right">Удалить</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {products.map((product) => (
                                             <TableRow key={product[1].id}>
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                >
+                                                <TableCell component="th" scope="row">
                                                     {product[1].title} (#
                                                     {product[1].id})
                                                 </TableCell>
@@ -215,9 +244,7 @@ function Basket({ open, onClose, basket }) {
                                                 <TableCell align="right">
                                                     <Button
                                                         onClick={() => {
-                                                            handleIncQuantity(
-                                                                product[1].id
-                                                            );
+                                                            handleIncQuantity(product[1].id);
                                                         }}
                                                     >
                                                         <ControlPointIcon />
@@ -225,9 +252,7 @@ function Basket({ open, onClose, basket }) {
 
                                                     <Button
                                                         onClick={() => {
-                                                            handleDecQuantity(
-                                                                product[1].id
-                                                            );
+                                                            handleDecQuantity(product[1].id);
                                                         }}
                                                     >
                                                         <RemoveCircleOutlineIcon />
@@ -237,9 +262,7 @@ function Basket({ open, onClose, basket }) {
                                                     <Button
                                                         color="secondary"
                                                         onClick={() => {
-                                                            handleRemItem(
-                                                                product[1].id
-                                                            );
+                                                            handleRemItem(product[1].id);
                                                         }}
                                                     >
                                                         Удалить
@@ -256,9 +279,7 @@ function Basket({ open, onClose, basket }) {
                 <Grid container>
                     <Grid item xs={3}>
                         <Grid container justify="center">
-                            <Typography variant="h6">
-                                {`Сумма: ${total} грн.`}
-                            </Typography>
+                            <Typography variant="h6">{`Сумма: ${total} грн.`}</Typography>
                         </Grid>
                     </Grid>
                     <Grid item xs={3}>
@@ -267,12 +288,7 @@ function Basket({ open, onClose, basket }) {
                         </Button>
                     </Grid>
                     <Grid item xs={3}>
-                        <Button
-                            onClick={onClose}
-                            color="primary"
-                            to="/checkout"
-                            component={Link}
-                        >
+                        <Button onClick={onClose} color="primary" to="/checkout" component={Link}>
                             Оформить заказ
                         </Button>
                     </Grid>

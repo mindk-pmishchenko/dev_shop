@@ -23,6 +23,8 @@ import BasketContext from '../../context/basketContext';
 import useStyles from './styles';
 import AppHeader from '../../components/appHeader';
 import CheckoutPage from '../../components/checkoutPage';
+import Orders from './../../components/orders';
+import PrivateRoute from './../../components/privateRoute';
 
 const Layout = () => {
     const classes = useStyles();
@@ -75,9 +77,7 @@ const Layout = () => {
                             <Route path="/cart/">
                                 <RegularPageView page="cart" />
                             </Route>
-                            <Route path="/orders/">
-                                <RegularPageView page="orders" />
-                            </Route>
+
                             <Route path="/manufacturers/">
                                 <RegularPageView page="manufacturers" />
                             </Route>
@@ -94,21 +94,18 @@ const Layout = () => {
                                 path="/category/:alias?"
                                 children={
                                     categoriesList ? (
-                                        <CategoryPage
-                                            categories={categoriesList}
-                                        />
+                                        <CategoryPage categories={categoriesList} />
                                     ) : (
                                         <CircularProgress />
                                     )
                                 }
                             />
+                            <PrivateRoute component={Orders} path="/orders" exact />
                             <Route
                                 path="/categories/"
                                 children={
                                     categoriesList ? (
-                                        <CategoryPage
-                                            categories={categoriesList}
-                                        />
+                                        <CategoryPage categories={categoriesList} />
                                     ) : (
                                         <CircularProgress />
                                     )
@@ -119,11 +116,7 @@ const Layout = () => {
                     </Container>
                 </main>
             </div>
-            <Basket
-                open={basketOpen}
-                onClose={handleCloseBasket}
-                basket={basket}
-            />
+            <Basket open={basketOpen} onClose={handleCloseBasket} basket={basket} />
         </ErrorBoundary>
     );
 };

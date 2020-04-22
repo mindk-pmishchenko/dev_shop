@@ -639,7 +639,70 @@ class Pure extends BaseModel {
             }
         });
     };
-    //
+    changeItemQuantity = async () => {
+        const { id, action } = this.params;
+        console.log('id: ', id, 'action: ', action);
+        return this.table.transaction(async trx => {
+            try {
+                return await trx
+                    .select('id')
+                    .from('orders_list')
+                    .where('user_id', this.user.id)
+                    .andWhere('active', true)
+                    .returning('id')
+                    .then(async orderData => {
+                        return await trx
+                            .select('id', 'quantity')
+                            .from('orders')
+                            .where('product_id', id)
+                            .andWhere('order_id', orderData[0].id)
+                            .returning('id', 'quantity')
+                            .catch(err => {
+                                console.log(err);
+                                return this.next(new AppError(err.detail, 400));
+                            })
+                            .then(async product => {
+                                console.log('product', product);
+
+                                if (!product.length) {
+                                    return this.next(
+                                        new AppError("You don't have this item in your cart", 400)
+                                    );
+                                }
+
+                                switch (action) {
+                                    case 'inc':
+                                        return await trx
+                                            .table('orders')
+                                            .increment('quantity', 1)
+                                            .where('product_id', id)
+                                            .andWhere('order_id', orderData[0].id);
+
+                                    case 'dec':
+                                        if (product[0].quantity < 2) {
+                                            console.log('less than 1');
+
+                                            return this.next(
+                                                new AppError("Can't be less than 1", 400)
+                                            );
+                                        }
+
+                                        return await trx
+                                            .table('orders')
+                                            .decrement('quantity', 1)
+                                            .where('product_id', id)
+                                            .andWhere('order_id', orderData[0].id);
+
+                                    default:
+                                        return false;
+                                }
+                            });
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    };
     //deleteFromCart
     deleteFromCart = async () => {
         const { id } = this.params;
