@@ -1,5 +1,8 @@
 import React, { useReducer } from 'react';
 import { SnackbarProvider } from 'notistack';
+import { createStore, combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
+import { Provider } from 'react-redux';
 
 import Layout from '../../containers/Layout/Layout';
 import BasketContext from './../../../src/context/basketContext';
@@ -97,15 +100,23 @@ const App = () => {
         },
     };
 
+    const rootReducer = combineReducers({
+        form: formReducer,
+    });
+
+    const store = createStore(rootReducer);
+
     return (
         <>
-            <AppContext.Provider value={appContext}>
-                <BasketContext.Provider value={context}>
-                    <SnackbarProvider maxSnack={1}>
-                        <Layout />
-                    </SnackbarProvider>
-                </BasketContext.Provider>
-            </AppContext.Provider>
+            <Provider store={store}>
+                <AppContext.Provider value={appContext}>
+                    <BasketContext.Provider value={context}>
+                        <SnackbarProvider maxSnack={1}>
+                            <Layout />
+                        </SnackbarProvider>
+                    </BasketContext.Provider>
+                </AppContext.Provider>
+            </Provider>
         </>
     );
 };

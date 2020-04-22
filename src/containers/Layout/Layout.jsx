@@ -23,6 +23,7 @@ import BasketContext from '../../context/basketContext';
 import useStyles from './styles';
 import AppHeader from '../../components/appHeader';
 import CheckoutPage from '../../components/checkoutPage';
+import CheckoutSuccessPage from '../../components/checkoutSuccessPage';
 import Orders from './../../components/orders';
 import PrivateRoute from './../../components/privateRoute';
 
@@ -84,9 +85,9 @@ const Layout = () => {
                             <Route path="/delivery/">
                                 <RegularPageView page="delivery" />
                             </Route>
-                            <Route path="/checkout/">
-                                <CheckoutPage />
-                            </Route>
+
+                            <PrivateRoute component={CheckoutSuccessPage} path="/success" exact />
+                            <PrivateRoute component={CheckoutPage} path="/checkout" exact />
                             <Route path="/login/">
                                 <Auth />
                             </Route>
