@@ -13,9 +13,6 @@ const Auth = () => {
       <Route path={`${url}/register`}>
         <Register />
       </Route>
-      <Route path={`${url}/login`}>
-        <Login />
-      </Route>
       <Route path={`${url}/logout`}>
         <Logout />
       </Route>
