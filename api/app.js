@@ -9,40 +9,42 @@ const deliveryRouter = require('./routes/deliveryRoutes');
 const userRouter = require('./routes/userRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const serviceLocator = require('./utils/service.locator');
+var cors = require('cors');
 
 //console.log(process.env);
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+    app.use(morgan('dev'));
 }
 
 app.use(express.json());
 
 // Init services:
 serviceLocator.register(
-  'db',
-  require('knex')({
-    client: process.env.DB_DRIVER,
-    connection: {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PWD,
-      database: process.env.DB_NAME
-    }
-  })
+    'db',
+    require('knex')({
+        client: process.env.DB_DRIVER,
+        connection: {
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PWD,
+            database: process.env.DB_NAME,
+        },
+    })
 );
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
+var corsOption = {
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token'],
+};
+app.use(cors(corsOption));
 
 //default
 app.get('/', (req, res) => {
-  res
-    .status(200)
-    .json({
-      message: 'hi from the server side',
-      app: 'mindkProject'
+    res.status(200).json({
+        message: 'hi from the server side',
+        app: 'mindkProject',
     });
 });
 
@@ -56,12 +58,12 @@ app.use('/api/orders', orderRouter);
 
 //wrong route handler
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    data: {
-      status: 'fail',
-      message: 'route not found'
-    }
-  });
+    res.status(404).json({
+        data: {
+            status: 'fail',
+            message: 'route not found',
+        },
+    });
 });
 
 app.use(globalErrorHandler);

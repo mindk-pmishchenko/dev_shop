@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import Auth from './../../components/auth/Auth';
 import AppMenu from './../../components/appMenu';
 import HomePage from '../../components/pages/homePage';
 import RegularPageView from '../../components/pages/regularPageView';
@@ -85,6 +86,9 @@ const Layout = () => {
                             </Route>
                             <Route path="/checkout/">
                                 <CheckoutPage />
+                            </Route>
+                            <Route path="/login/">
+                                <Auth />
                             </Route>
                             <Route
                                 path="/category/:alias?"

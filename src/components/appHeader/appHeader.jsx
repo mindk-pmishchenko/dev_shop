@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-
+import { Link } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,6 +15,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 import BasketContext from './../../context/basketContext';
+import AppContext from './../../context/appContext';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -81,12 +82,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AppHeader() {
+    const { authData } = useContext(AppContext);
+    const { isAuth, handleUserLogout } = authData;
+    if (isAuth) {
+        var {
+            userData: { id, avatar, last_name, first_name, email },
+        } = authData;
+    }
+
     const classes = useStyles();
     const {
-        itemsInCartQuantityContext: {
-            itemsInCartQuantity,
-            setItemsInCartQuantity,
-        },
+        itemsInCartQuantityContext: { itemsInCartQuantity, setItemsInCartQuantity },
     } = useContext(BasketContext);
     const {
         basketOpenContext: { basketOpen, setBasketOpen },
@@ -136,7 +142,12 @@ export default function AppHeader() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            {isAuth && <MenuItem onClick={handleUserLogout}>Logout</MenuItem>}
+            {!isAuth && (
+                <MenuItem component={Link} to="/login">
+                    Login
+                </MenuItem>
+            )}
         </Menu>
     );
 
@@ -210,10 +221,7 @@ export default function AppHeader() {
                             aria-label={`show ${itemsInCartQuantity} items in your cart`}
                             color="inherit"
                         >
-                            <Badge
-                                badgeContent={itemsInCartQuantity}
-                                color="secondary"
-                            >
+                            <Badge badgeContent={itemsInCartQuantity} color="secondary">
                                 <ShoppingCartIcon />
                             </Badge>
                         </IconButton>
